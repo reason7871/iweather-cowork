@@ -9,7 +9,7 @@ import { ThemeProvider } from './context/ThemeContext'
 import { windowWorkspaceIdAtom } from './atoms/sessions'
 import { Toaster } from '@/components/ui/sonner'
 import './index.css'
-// i18n configuration - must be imported before any component that uses translations
+// i18n - must be imported before LanguageProvider
 import './i18n'
 import { LanguageProvider } from './i18n/LanguageContext'
 

@@ -12,17 +12,11 @@ import { initReactI18next } from 'react-i18next'
 import zhCommon from './locales/zh-CN/common.json'
 import zhMenu from './locales/zh-CN/menu.json'
 import zhSettings from './locales/zh-CN/settings.json'
-import zhSessions from './locales/zh-CN/sessions.json'
-import zhErrors from './locales/zh-CN/errors.json'
-import zhOnboarding from './locales/zh-CN/onboarding.json'
 
 // Import English translations
 import enCommon from './locales/en-US/common.json'
 import enMenu from './locales/en-US/menu.json'
 import enSettings from './locales/en-US/settings.json'
-import enSessions from './locales/en-US/sessions.json'
-import enErrors from './locales/en-US/errors.json'
-import enOnboarding from './locales/en-US/onboarding.json'
 
 // Language resources
 const resources = {
@@ -30,17 +24,11 @@ const resources = {
     common: zhCommon,
     menu: zhMenu,
     settings: zhSettings,
-    sessions: zhSessions,
-    errors: zhErrors,
-    onboarding: zhOnboarding,
   },
   'en-US': {
     common: enCommon,
     menu: enMenu,
     settings: enSettings,
-    sessions: enSessions,
-    errors: enErrors,
-    onboarding: enOnboarding,
   },
 }
 
@@ -51,20 +39,28 @@ const LANGUAGE_STORAGE_KEY = 'craft-agent-language'
  * Get saved language from localStorage or return default
  */
 function getSavedLanguage(): string {
-  if (typeof window === 'undefined') return 'zh-CN'
-  const saved = localStorage.getItem(LANGUAGE_STORAGE_KEY)
-  if (saved && (saved === 'zh-CN' || saved === 'en-US')) {
-    return saved
+  try {
+    if (typeof window === 'undefined') return 'zh-CN'
+    const saved = localStorage.getItem(LANGUAGE_STORAGE_KEY)
+    if (saved && (saved === 'zh-CN' || saved === 'en-US')) {
+      return saved
+    }
+  } catch {
+    // localStorage might not be available
   }
-  return 'zh-CN' // Default to Chinese
+  return 'zh-CN'
 }
 
 /**
  * Save language preference to localStorage
  */
 export function saveLanguage(language: string): void {
-  if (typeof window !== 'undefined') {
-    localStorage.setItem(LANGUAGE_STORAGE_KEY, language)
+  try {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(LANGUAGE_STORAGE_KEY, language)
+    }
+  } catch {
+    // localStorage might not be available
   }
 }
 
@@ -73,17 +69,25 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: getSavedLanguage(),
+    lng: 'zh-CN',  // Default to Chinese
     fallbackLng: 'en-US',
     defaultNS: 'common',
-    ns: ['common', 'menu', 'settings', 'sessions', 'errors', 'onboarding'],
+    ns: ['common', 'menu', 'settings'],
     interpolation: {
-      escapeValue: false, // React already escapes values
+      escapeValue: false,
     },
     react: {
-      useSuspense: false, // Disable suspense for simpler loading
+      useSuspense: false,
     },
   })
+
+// After initialization, try to load saved language preference
+if (typeof window !== 'undefined') {
+  const saved = getSavedLanguage()
+  if (saved && saved !== 'zh-CN') {
+    i18n.changeLanguage(saved)
+  }
+}
 
 export default i18n
 

@@ -31,8 +31,8 @@ import { useWorkspaceIcons } from '@/hooks/useWorkspaceIcon'
 import { Info_DataTable, SortableHeader } from '@/components/info/Info_DataTable'
 import { Info_Badge } from '@/components/info/Info_Badge'
 import type { PresetTheme } from '@config/theme'
-import { useLanguage } from '@/i18n/LanguageContext'
 import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@/i18n/LanguageContext'
 
 export const meta: DetailsPageMeta = {
   navigator: 'settings',
