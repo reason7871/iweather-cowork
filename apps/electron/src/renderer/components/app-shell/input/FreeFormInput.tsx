@@ -1,5 +1,6 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
+import { useTranslation } from 'react-i18next'
 import { Command as CommandPrimitive } from 'cmdk'
 import { toast } from 'sonner'
 import {
@@ -86,16 +87,18 @@ function formatTokenCount(tokens: number): string {
 /** Platform-specific modifier key for keyboard shortcuts */
 const cmdKey = isMac ? '⌘' : 'Ctrl'
 
-/** Default rotating placeholders for onboarding/empty state */
-const DEFAULT_PLACEHOLDERS = [
-  'What would you like to work on?',
-  'Use Shift + Tab to switch between Explore and Execute',
-  'Type @ to mention files, folders, or skills',
-  'Type # to apply labels to this conversation',
-  'Press Shift + Return to add a new line',
-  `Press ${cmdKey} + B to toggle the sidebar`,
-  `Press ${cmdKey} + . for focus mode`,
-]
+/** Get default rotating placeholders for onboarding/empty state */
+function getDefaultPlaceholders(t: (key: string, options?: Record<string, unknown>) => string): string[] {
+  return [
+    t('inputPlaceholder'),
+    t('inputHintExplore'),
+    t('inputHintMention'),
+    t('inputHintLabels'),
+    t('inputHintNewline'),
+    t('inputHintSidebar', { cmd: cmdKey }),
+    t('inputHintFocusMode', { cmd: cmdKey }),
+  ]
+}
 
 /** Fisher-Yates shuffle — returns a new array in random order */
 function shuffleArray<T>(array: T[]): T[] {
@@ -211,7 +214,7 @@ export interface FreeFormInputProps {
  * - Active option badges
  */
 export function FreeFormInput({
-  placeholder = DEFAULT_PLACEHOLDERS,
+  placeholder,
   disabled = false,
   isProcessing = false,
   onSubmit,
@@ -252,6 +255,12 @@ export function FreeFormInput({
   onConnectionChange,
   connectionUnavailable = false,
 }: FreeFormInputProps) {
+  const { t } = useTranslation('common')
+
+  // Get default placeholders if none provided
+  const defaultPlaceholders = React.useMemo(() => getDefaultPlaceholders(t), [t])
+  const effectivePlaceholder = placeholder ?? defaultPlaceholders
+
   // Read connection default model, connections, and workspace info from context.
   // Uses optional variant so playground (no provider) doesn't crash.
   const appShellCtx = useOptionalAppShellContext()
@@ -368,7 +377,7 @@ export function FreeFormInput({
 
   // Shuffle placeholder order once per mount so each session feels fresh
   const shuffledPlaceholder = React.useMemo(
-    () => Array.isArray(placeholder) ? shuffleArray(placeholder) : placeholder,
+    () => Array.isArray(effectivePlaceholder) ? shuffleArray(effectivePlaceholder) : effectivePlaceholder,
     [] // eslint-disable-line react-hooks/exhaustive-deps -- intentionally shuffle only on mount
   )
 
@@ -1554,7 +1563,7 @@ export function FreeFormInput({
                             ref={sourceFilterInputRef}
                             value={sourceFilter}
                             onValueChange={setSourceFilter}
-                            placeholder="Search sources..."
+                            placeholder={t('searchSources')}
                             className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground placeholder:select-none"
                           />
                         </div>
@@ -1707,7 +1716,7 @@ Model
                                 {isCurrentConnection && <Check className="h-3 w-3 text-foreground" />}
                               </div>
                               {!isAuthenticated && (
-                                <div className="text-xs text-muted-foreground">Not authenticated</div>
+                                <div className="text-xs text-muted-foreground">{t('notAuthenticated')}</div>
                               )}
                             </div>
                           </StyledDropdownMenuSubTrigger>
@@ -2087,7 +2096,7 @@ function WorkingDirectoryBadge({
                 ref={inputRef}
                 value={filter}
                 onValueChange={setFilter}
-                placeholder="Filter folders..."
+                placeholder={t('filterFolders')}
                 className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground/50 placeholder:select-none"
               />
             </div>

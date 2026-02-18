@@ -1,5 +1,6 @@
 import * as React from "react"
 import { useRef, useState, useEffect, useCallback, useMemo } from "react"
+import { useTranslation } from "react-i18next"
 import { useAtomValue } from "jotai"
 import { motion, AnimatePresence } from "motion/react"
 import {
@@ -176,10 +177,12 @@ function FilterModeSubMenuItems({
   mode,
   onChangeMode,
   onRemove,
+  t,
 }: {
   mode: FilterMode
   onChangeMode: (mode: FilterMode) => void
   onRemove: () => void
+  t: (key: string) => string
 }) {
   return (
     <>
@@ -188,21 +191,21 @@ function FilterModeSubMenuItems({
         className={cn(mode === 'include' && "bg-foreground/[0.03]")}
       >
         <Check className="h-3.5 w-3.5 shrink-0" />
-        <span className="flex-1">Include</span>
+        <span className="flex-1">{t('include')}</span>
       </StyledDropdownMenuItem>
       <StyledDropdownMenuItem
         onClick={(e) => { e.preventDefault(); onChangeMode('exclude') }}
         className={cn(mode === 'exclude' && "bg-foreground/[0.03]")}
       >
         <X className="h-3.5 w-3.5 shrink-0" />
-        <span className="flex-1">Exclude</span>
+        <span className="flex-1">{t('exclude')}</span>
       </StyledDropdownMenuItem>
       <StyledDropdownMenuSeparator />
       <StyledDropdownMenuItem
         onClick={(e) => { e.preventDefault(); onRemove() }}
       >
         <Trash2 className="h-3.5 w-3.5 shrink-0" />
-        <span className="flex-1">Clear</span>
+        <span className="flex-1">{t('clear')}</span>
       </StyledDropdownMenuItem>
     </>
   )
@@ -268,12 +271,14 @@ function FilterLabelItems({
   labelFilter,
   setLabelFilter,
   pinnedLabelId,
+  t,
 }: {
   labels: LabelConfig[]
   labelFilter: Map<string, FilterMode>
   setLabelFilter: (updater: Map<string, FilterMode> | ((prev: Map<string, FilterMode>) => Map<string, FilterMode>)) => void
   /** Label ID pinned by the current route (non-removable, shown as checked+disabled) */
   pinnedLabelId?: string | null
+  t: (key: string) => string
 }) {
   /** Toggle a label filter: if active → remove, if inactive → add as 'include' */
   const toggleLabel = (id: string) => {
@@ -341,7 +346,7 @@ function FilterLabelItems({
                         />
                       </StyledDropdownMenuSubTrigger>
                       <StyledDropdownMenuSubContent minWidth="min-w-[140px]">
-                        <FilterModeSubMenuItems mode={mode} {...makeModeCallbacks(label.id)} />
+                        <FilterModeSubMenuItems mode={mode} {...makeModeCallbacks(label.id)} t={t} />
                       </StyledDropdownMenuSubContent>
                     </DropdownMenuSub>
                     <StyledDropdownMenuSeparator />
@@ -350,6 +355,7 @@ function FilterLabelItems({
                       labelFilter={labelFilter}
                       setLabelFilter={setLabelFilter}
                       pinnedLabelId={pinnedLabelId}
+                      t={t}
                     />
                   </>
                 ) : (
@@ -375,6 +381,7 @@ function FilterLabelItems({
                       labelFilter={labelFilter}
                       setLabelFilter={setLabelFilter}
                       pinnedLabelId={pinnedLabelId}
+                      t={t}
                     />
                   </>
                 )}
@@ -487,6 +494,22 @@ function AppShellContent({
 
   // Get hotkey labels from centralized action registry
   const newChatHotkey = useActionLabel('app.newChat').hotkey
+  const { t } = useTranslation('menu')
+  const { t: tSessions } = useTranslation('sessions')
+
+  // Helper to get translated status label
+  const getStatusLabel = (statusId: string, fallback: string): string => {
+    const key = `status${statusId.charAt(0).toUpperCase()}${statusId.slice(1).replace(/-([a-z])/g, (_, c) => c.toUpperCase())}`
+    const translated = tSessions(key, { defaultValue: '' })
+    return translated || fallback
+  }
+
+  // Helper to get translated label name
+  const getLabelDisplayNameTranslated = (labelId: string, fallback: string): string => {
+    const key = `label${labelId.charAt(0).toUpperCase()}${labelId.slice(1).replace(/-([a-z])/g, (_, c) => c.toUpperCase())}`
+    const translated = tSessions(key, { defaultValue: '' })
+    return translated || fallback
+  }
 
   const [isSidebarVisible, setIsSidebarVisible] = React.useState(() => {
     return storage.get(storage.KEYS.sidebarVisible, !defaultCollapsed)
@@ -1913,35 +1936,35 @@ function AppShellContent({
   const listTitle = React.useMemo(() => {
     // Sources navigator
     if (isSourcesNavigation(navState)) {
-      return 'Sources'
+      return t('sources')
     }
 
     // Skills navigator
     if (isSkillsNavigation(navState)) {
-      return 'All Skills'
+      return t('skills')
     }
 
     // Settings navigator
-    if (isSettingsNavigation(navState)) return 'Settings'
+    if (isSettingsNavigation(navState)) return t('settings')
 
     // Sessions navigator - use sessionFilter
-    if (!sessionFilter) return 'All Sessions'
+    if (!sessionFilter) return t('allSessions')
 
     switch (sessionFilter.kind) {
       case 'flagged':
-        return 'Flagged'
+        return t('flagged')
       case 'state': {
         const state = effectiveSessionStatuses.find(s => s.id === sessionFilter.stateId)
-        return state?.label || 'All Sessions'
+        return state ? getStatusLabel(state.id, state.label) : t('allSessions')
       }
       case 'label':
-        return sessionFilter.labelId === '__all__' ? 'Labels' : getLabelDisplayName(labelConfigs, sessionFilter.labelId)
+        return sessionFilter.labelId === '__all__' ? t('labels') : getLabelDisplayName(labelConfigs, sessionFilter.labelId)
       case 'view':
-        return sessionFilter.viewId === '__all__' ? 'Views' : viewConfigs.find(v => v.id === sessionFilter.viewId)?.name || 'Views'
+        return sessionFilter.viewId === '__all__' ? t('views') : viewConfigs.find(v => v.id === sessionFilter.viewId)?.name || t('views')
       default:
-        return 'All Sessions'
+        return t('allSessions')
     }
-  }, [navState, sessionFilter, effectiveSessionStatuses, labelConfigs, viewConfigs])
+  }, [navState, sessionFilter, effectiveSessionStatuses, labelConfigs, viewConfigs, t])
 
   // Build recursive sidebar items from label tree.
   // Each node renders with condensed height (compact: true) since many labels expected.
@@ -1960,7 +1983,7 @@ function AppShellContent({
 
       const item: any = {
         id: `nav:label:${node.fullId}`,
-        title: node.label?.name || node.segment.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+        title: node.label ? getLabelDisplayNameTranslated(node.label.id, node.label.name) : node.segment.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
         label: count > 0 ? String(count) : undefined,
         // Show label type icon (Hash/Calendar/Type) right-aligned before count, with tooltip explaining the type
         afterTitle: node.label?.valueType ? (
@@ -2090,7 +2113,7 @@ function AppShellContent({
                               data-tutorial="new-chat-button"
                             >
                               <SquarePenRounded className="h-3.5 w-3.5 shrink-0" />
-                              New Session
+                              {t('newChat')}
                             </Button>
                           </ContextMenuTrigger>
                           <StyledContextMenuContent>
@@ -2115,7 +2138,7 @@ function AppShellContent({
                     // --- Sessions Section ---
                     {
                       id: "nav:allSessions",
-                      title: "All Sessions",
+                      title: t('allSessions'),
                       label: String(workspaceSessionMetas.length),
                       icon: Inbox,
                       variant: sessionFilter?.kind === 'allSessions' ? "default" : "ghost",
@@ -2123,7 +2146,7 @@ function AppShellContent({
                     },
                     {
                       id: "nav:flagged",
-                      title: "Flagged",
+                      title: t('flagged'),
                       label: String(flaggedCount),
                       icon: <Flag className="h-3.5 w-3.5" />,
                       variant: sessionFilter?.kind === 'flagged' ? "default" : "ghost",
@@ -2132,7 +2155,7 @@ function AppShellContent({
                     // States: expandable section with status sub-items (drag-and-drop reorder)
                     {
                       id: "nav:states",
-                      title: "Status",
+                      title: t('status'),
                       icon: CheckCircle2,
                       variant: "ghost",
                       onClick: () => toggleExpanded('nav:states'),
@@ -2147,7 +2170,7 @@ function AppShellContent({
                       sortable: { onReorder: handleStatusReorder },
                       items: effectiveSessionStatuses.map(state => ({
                         id: `nav:state:${state.id}`,
-                        title: state.label,
+                        title: getStatusLabel(state.id, state.label),
                         label: String(sessionStatusCounts[state.id] || 0),
                         icon: state.icon,
                         iconColor: state.resolvedColor,
@@ -2164,7 +2187,7 @@ function AppShellContent({
                     // Labels: navigable header (shows all labeled sessions) + hierarchical tree (drag-and-drop reorder + re-parent)
                     {
                       id: "nav:labels",
-                      title: "Labels",
+                      title: t('labels'),
                       icon: Tag,
                       // Only highlighted when "Labels" itself is selected (not sub-labels)
                       variant: (sessionFilter?.kind === 'label' && sessionFilter.labelId === '__all__') ? "default" as const : "ghost" as const,
@@ -2183,7 +2206,7 @@ function AppShellContent({
                     // --- Archived Section ---
                     {
                       id: "nav:archived",
-                      title: "Archived",
+                      title: t('archived'),
                       label: archivedCount > 0 ? String(archivedCount) : undefined,
                       icon: Archive,
                       variant: sessionFilter?.kind === 'archived' ? "default" : "ghost",
@@ -2194,7 +2217,7 @@ function AppShellContent({
                     // --- Sources & Skills Section ---
                     {
                       id: "nav:sources",
-                      title: "Sources",
+                      title: t('sources'),
                       label: String(sources.length),
                       icon: DatabaseZap,
                       variant: (isSourcesNavigation(navState) && !sourceFilter) ? "default" : "ghost",
@@ -2210,7 +2233,7 @@ function AppShellContent({
                       items: [
                         {
                           id: "nav:sources:api",
-                          title: "APIs",
+                          title: t('apis'),
                           label: String(sourceTypeCounts.api),
                           icon: Globe,
                           variant: (sourceFilter?.kind === 'type' && sourceFilter.sourceType === 'api') ? "default" : "ghost",
@@ -2223,7 +2246,7 @@ function AppShellContent({
                         },
                         {
                           id: "nav:sources:mcp",
-                          title: "MCPs",
+                          title: t('mcps'),
                           label: String(sourceTypeCounts.mcp),
                           icon: <McpIcon className="h-3.5 w-3.5" />,
                           variant: (sourceFilter?.kind === 'type' && sourceFilter.sourceType === 'mcp') ? "default" : "ghost",
@@ -2236,7 +2259,7 @@ function AppShellContent({
                         },
                         {
                           id: "nav:sources:local",
-                          title: "Local Folders",
+                          title: t('localFolders'),
                           label: String(sourceTypeCounts.local),
                           icon: FolderOpen,
                           variant: (sourceFilter?.kind === 'type' && sourceFilter.sourceType === 'local') ? "default" : "ghost",
@@ -2251,7 +2274,7 @@ function AppShellContent({
                     },
                     {
                       id: "nav:skills",
-                      title: "Skills",
+                      title: t('skills'),
                       label: String(skills.length),
                       icon: Zap,
                       variant: isSkillsNavigation(navState) ? "default" : "ghost",
@@ -2266,7 +2289,7 @@ function AppShellContent({
                     // --- Settings ---
                     {
                       id: "nav:settings",
-                      title: "Settings",
+                      title: t('settings'),
                       icon: Settings,
                       variant: isSettingsNavigation(navState) ? "default" : "ghost",
                       onClick: () => handleSettingsClick('app'),
@@ -2274,7 +2297,7 @@ function AppShellContent({
                     // --- What's New ---
                     {
                       id: "nav:whats-new",
-                      title: "What's New",
+                      title: t('whatsNew'),
                       icon: hasUnseenReleaseNotes ? (
                         <span className="relative">
                           <Cake className="h-3.5 w-3.5" />
@@ -2437,7 +2460,7 @@ function AppShellContent({
                       >
                         {/* Header with title and clear button (only clears user-added filters, never pinned) */}
                         <div className="flex items-center justify-between px-2 py-1.5">
-                          <span className="text-xs font-medium text-muted-foreground">Filter Chats</span>
+                          <span className="text-xs font-medium text-muted-foreground">{t('filterChats')}</span>
                           {(listFilter.size > 0 || labelFilter.size > 0) && (
                             <button
                               onClick={(e) => {
@@ -2447,7 +2470,7 @@ function AppShellContent({
                               }}
                               className="text-xs text-muted-foreground hover:text-foreground"
                             >
-                              Clear
+                              {t('clear')}
                             </button>
                           )}
                         </div>

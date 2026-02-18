@@ -37,5 +37,16 @@
   "failedToStop": "Failed to stop",
   "noResults": "No results",
   "noSessionsFound": "No sessions found",
-  "searchedContent": "Searched titles and message content"
+  "searchedContent": "Searched titles and message content",
+  "inputPlaceholder": "What would you like to work on?",
+  "inputHintExplore": "Use Shift + Tab to switch between Explore and Execute",
+  "inputHintMention": "Type @ to mention files, folders, or skills",
+  "inputHintLabels": "Type # to apply labels to this conversation",
+  "inputHintNewline": "Press Shift + Return to add a new line",
+  "inputHintSidebar": "Press {{cmd}} + B to toggle the sidebar",
+  "inputHintFocusMode": "Press {{cmd}} + . for focus mode",
+  "errorLoadingContent": "Error loading content",
+  "searchSources": "Search sources...",
+  "filterFolders": "Filter folders...",
+  "notAuthenticated": "Not authenticated"
 }
