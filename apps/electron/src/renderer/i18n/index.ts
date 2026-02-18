@@ -12,11 +12,19 @@ import { initReactI18next } from 'react-i18next'
 import zhCommon from './locales/zh-CN/common.json'
 import zhMenu from './locales/zh-CN/menu.json'
 import zhSettings from './locales/zh-CN/settings.json'
+import zhSessions from './locales/zh-CN/sessions.json'
+import zhErrors from './locales/zh-CN/errors.json'
+import zhAuth from './locales/zh-CN/auth.json'
+import zhHints from './locales/zh-CN/hints.json'
 
 // Import English translations
 import enCommon from './locales/en-US/common.json'
 import enMenu from './locales/en-US/menu.json'
 import enSettings from './locales/en-US/settings.json'
+import enSessions from './locales/en-US/sessions.json'
+import enErrors from './locales/en-US/errors.json'
+import enAuth from './locales/en-US/auth.json'
+import enHints from './locales/en-US/hints.json'
 
 // Language resources
 const resources = {
@@ -24,11 +32,19 @@ const resources = {
     common: zhCommon,
     menu: zhMenu,
     settings: zhSettings,
+    sessions: zhSessions,
+    errors: zhErrors,
+    auth: zhAuth,
+    hints: zhHints,
   },
   'en-US': {
     common: enCommon,
     menu: enMenu,
     settings: enSettings,
+    sessions: enSessions,
+    errors: enErrors,
+    auth: enAuth,
+    hints: enHints,
   },
 }
 
@@ -72,7 +88,7 @@ i18n
     lng: 'zh-CN',  // Default to Chinese
     fallbackLng: 'en-US',
     defaultNS: 'common',
-    ns: ['common', 'menu', 'settings'],
+    ns: ['common', 'menu', 'settings', 'sessions', 'errors', 'auth', 'hints'],
     interpolation: {
       escapeValue: false,
     },

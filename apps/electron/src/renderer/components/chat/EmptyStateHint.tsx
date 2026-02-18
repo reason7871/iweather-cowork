@@ -13,6 +13,7 @@
  */
 
 import * as React from 'react'
+import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
 
 // ============================================================================
@@ -38,7 +39,7 @@ interface ParsedHint {
 // ============================================================================
 
 /**
- * Hint templates with entity placeholders.
+ * Get hint templates with entity placeholders from i18n.
  * Format: {type:label} or {type} for default label
  *
  * Supported tokens:
@@ -47,23 +48,18 @@ interface ParsedHint {
  * - {folder} - Working directory
  * - {skill} - Custom skill
  */
-const HINT_TEMPLATES = [
-  'Summarize your {source:Gmail} inbox, draft replies, and save notes to {source:Craft}',
-  'Turn a {file:screenshot} into a working website in your {folder}',
-  'Pull issues from {source:Linear}, research in {source:Slack}, ship the fix',
-  'Transcribe a {file:voice memo} and turn it into {source:Notion} tasks',
-  'Analyze a {file:spreadsheet} and post insights to {source:Slack}',
-  'Review {source:GitHub} PRs, then summarize changes in {source:Craft}',
-  'Parse an {file:invoice PDF} and log it to {source:Google Sheets}',
-  'Research with {source:Exa}, write it up, save to your {source:Obsidian} vault',
-  'Refactor code in your {folder}, then push to {source:GitHub}',
-  'Sync {source:Calendar} events with {source:Linear} project deadlines',
-  'Turn meeting {file:notes} into {source:Jira} tickets automatically',
-  'Query your {source:database} and visualize results in a new {file:document}',
-  'Fetch {source:Figma} designs and generate React components in your {folder}',
-  'Combine {source:Slack} threads into a weekly digest for {source:Notion}',
-  'Run a {skill} to analyze your codebase and fix issues in your {folder}',
-]
+function getHintTemplates(t: (key: string, options?: Record<string, unknown>) => string): string[] {
+  try {
+    const templates = t('templates', { returnObjects: true }) as unknown
+    if (Array.isArray(templates)) {
+      return templates
+    }
+  } catch {
+    // Ignore errors
+  }
+  // Fallback to empty array
+  return []
+}
 
 // ============================================================================
 // Parsing
@@ -127,8 +123,13 @@ function parseHintTemplate(template: string, id: string): ParsedHint {
 /**
  * Parse all hint templates
  */
-function parseAllHints(): ParsedHint[] {
-  return HINT_TEMPLATES.map((template, index) => parseHintTemplate(template, `hint-${index}`))
+function parseAllHints(t: (key: string, options?: Record<string, unknown>) => string): ParsedHint[] {
+  const templates = getHintTemplates(t)
+  if (templates.length === 0) {
+    // Return a default hint if no templates available
+    return [{ id: 'hint-default', segments: [{ type: 'text', content: 'Start a conversation' }] }]
+  }
+  return templates.map((template, index) => parseHintTemplate(template, `hint-${index}`))
 }
 
 // ============================================================================
@@ -170,8 +171,10 @@ export interface EmptyStateHintProps {
  * example workflows with inline entity badges.
  */
 export function EmptyStateHint({ hintIndex, className }: EmptyStateHintProps) {
+  const { t } = useTranslation('hints')
+
   // Parse all hints once
-  const allHints = React.useMemo(() => parseAllHints(), [])
+  const allHints = React.useMemo(() => parseAllHints(t), [t])
 
   // Select a hint - either specified index or random on mount
   const [selectedIndex] = React.useState(() => {
@@ -216,12 +219,15 @@ export function EmptyStateHint({ hintIndex, className }: EmptyStateHintProps) {
  * Get the total number of available hints (for playground variant generation)
  */
 export function getHintCount(): number {
-  return HINT_TEMPLATES.length
+  // Return fixed count since templates are static
+  return 15
 }
 
 /**
  * Get hint template by index (for debugging/testing)
+ * Note: This returns a placeholder since i18n is not available in static context
  */
 export function getHintTemplate(index: number): string {
-  return HINT_TEMPLATES[index % HINT_TEMPLATES.length]
+  // Return placeholder - actual templates come from i18n
+  return `Hint ${index}`
 }

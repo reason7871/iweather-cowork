@@ -13,6 +13,7 @@
 
 import * as React from 'react'
 import { useState, useEffect, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'motion/react'
 import { PanelHeader } from '@/components/app-shell/PanelHeader'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -45,6 +46,7 @@ export const meta: DetailsPageMeta = {
 // ============================================
 
 export default function WorkspaceSettingsPage() {
+  const { t } = useTranslation('settings')
   // Get active workspace from context
   const appShellContext = useAppShellContext()
   const activeWorkspaceId = appShellContext.activeWorkspaceId
@@ -292,7 +294,7 @@ export default function WorkspaceSettingsPage() {
 
       // Validate: at least 2 modes required
       if (newModes.length < 2) {
-        setModeCyclingError('At least 2 modes required')
+        setModeCyclingError(t('atLeast2Modes'))
         // Auto-dismiss after 2 seconds
         setTimeout(() => {
           setModeCyclingError(null)
@@ -316,9 +318,9 @@ export default function WorkspaceSettingsPage() {
   if (!activeWorkspaceId) {
     return (
       <div className="h-full flex flex-col">
-        <PanelHeader title="Workspace Settings" actions={<HeaderMenu route={routes.view.settings('workspace')} helpFeature="workspaces" />} />
+        <PanelHeader title={t('workspaceSettings')} actions={<HeaderMenu route={routes.view.settings('workspace')} helpFeature="workspaces" />} />
         <div className="flex-1 flex items-center justify-center">
-          <p className="text-sm text-muted-foreground">No workspace selected</p>
+          <p className="text-sm text-muted-foreground">{t('noWorkspaceSelected')}</p>
         </div>
       </div>
     )
@@ -328,7 +330,7 @@ export default function WorkspaceSettingsPage() {
   if (isLoadingWorkspace) {
     return (
       <div className="h-full flex flex-col">
-        <PanelHeader title="Workspace Settings" actions={<HeaderMenu route={routes.view.settings('workspace')} helpFeature="workspaces" />} />
+        <PanelHeader title={t('workspaceSettings')} actions={<HeaderMenu route={routes.view.settings('workspace')} helpFeature="workspaces" />} />
         <div className="flex-1 flex items-center justify-center">
           <Spinner className="text-muted-foreground" />
         </div>
@@ -338,17 +340,17 @@ export default function WorkspaceSettingsPage() {
 
   return (
     <div className="h-full flex flex-col">
-      <PanelHeader title="Workspace Settings" actions={<HeaderMenu route={routes.view.settings('workspace')} helpFeature="workspaces" />} />
+      <PanelHeader title={t('workspaceSettings')} actions={<HeaderMenu route={routes.view.settings('workspace')} helpFeature="workspaces" />} />
       <div className="flex-1 min-h-0 mask-fade-y">
         <ScrollArea className="h-full">
           <div className="px-5 py-7 max-w-3xl mx-auto">
           <div className="space-y-8">
             {/* Workspace Info */}
-            <SettingsSection title="Workspace Info">
+            <SettingsSection title={t('workspaceInfo')}>
               <SettingsCard>
                 <SettingsRow
-                  label="Name"
-                  description={wsName || 'Untitled'}
+                  label={t('name')}
+                  description={wsName || t('untitled')}
                   action={
                     <button
                       type="button"
@@ -358,12 +360,12 @@ export default function WorkspaceSettingsPage() {
                       }}
                       className="inline-flex items-center h-8 px-3 text-sm rounded-lg bg-background shadow-minimal hover:bg-foreground/[0.02] transition-colors"
                     >
-                      Edit
+                      {t('edit')}
                     </button>
                   }
                 />
                 <SettingsRow
-                  label="Icon"
+                  label={t('icon')}
                   action={
                     <label className="cursor-pointer">
                       <input
@@ -374,7 +376,7 @@ export default function WorkspaceSettingsPage() {
                         disabled={isUploadingIcon}
                       />
                       <span className="inline-flex items-center h-8 px-3 text-sm rounded-lg bg-background shadow-minimal hover:bg-foreground/[0.02] transition-colors">
-                        {isUploadingIcon ? 'Uploading...' : 'Change'}
+                        {isUploadingIcon ? t('uploading') : t('change')}
                       </span>
                     </label>
                   }
@@ -401,7 +403,7 @@ export default function WorkspaceSettingsPage() {
               <RenameDialog
                 open={renameDialogOpen}
                 onOpenChange={setRenameDialogOpen}
-                title="Rename workspace"
+                title={t('renameWorkspace')}
                 value={wsNameEditing}
                 onValueChange={setWsNameEditing}
                 onSubmit={() => {
@@ -413,16 +415,16 @@ export default function WorkspaceSettingsPage() {
                   }
                   setRenameDialogOpen(false)
                 }}
-                placeholder="Enter workspace name..."
+                placeholder={t('enterWorkspaceName')}
               />
             </SettingsSection>
 
             {/* Permissions */}
-            <SettingsSection title="Permissions">
+            <SettingsSection title={t('permissions')}>
               <SettingsCard>
                 <SettingsMenuSelectRow
-                  label="Default mode"
-                  description="Control what AI can do"
+                  label={t('defaultMode')}
+                  description={t('defaultModeDesc')}
                   value={permissionMode}
                   onValueChange={(v) => handlePermissionModeChange(v as PermissionMode)}
                   options={[
@@ -436,8 +438,8 @@ export default function WorkspaceSettingsPage() {
 
             {/* Mode Cycling */}
             <SettingsSection
-              title="Mode Cycling"
-              description="Select which modes to cycle through with Shift+Tab"
+              title={t('modeCycling')}
+              description={t('modeCyclingDesc')}
             >
               <SettingsCard>
                 {(['safe', 'ask', 'allow-all'] as const).map((m) => {
@@ -471,8 +473,8 @@ export default function WorkspaceSettingsPage() {
 
             {/* Default Sources */}
             <SettingsSection
-              title="Default Sources"
-              description="Sources auto-enabled for new sessions"
+              title={t('defaultSources')}
+              description={t('defaultSourcesDesc')}
             >
               {availableSources.length > 0 ? (
                 <SettingsCard>
@@ -492,16 +494,16 @@ export default function WorkspaceSettingsPage() {
                   ))}
                 </SettingsCard>
               ) : (
-                <p className="text-sm text-muted-foreground">No sources configured in this workspace.</p>
+                <p className="text-sm text-muted-foreground">{t('noSources')}</p>
               )}
             </SettingsSection>
 
             {/* Advanced */}
-            <SettingsSection title="Advanced">
+            <SettingsSection title={t('advanced')}>
               <SettingsCard>
                 <SettingsRow
-                  label="Default Working Directory"
-                  description={workingDirectory || 'Not set (uses session folder)'}
+                  label={t('defaultWorkingDirectory')}
+                  description={workingDirectory || t('notSet')}
                   action={
                     <div className="flex items-center gap-2">
                       {workingDirectory && (
@@ -510,7 +512,7 @@ export default function WorkspaceSettingsPage() {
                           onClick={handleClearWorkingDirectory}
                           className="inline-flex items-center h-8 px-3 text-sm rounded-lg bg-background shadow-minimal hover:bg-foreground/[0.02] transition-colors text-foreground/60 hover:text-foreground"
                         >
-                          Clear
+                          {t('clear')}
                         </button>
                       )}
                       <button
@@ -518,14 +520,14 @@ export default function WorkspaceSettingsPage() {
                         onClick={handleChangeWorkingDirectory}
                         className="inline-flex items-center h-8 px-3 text-sm rounded-lg bg-background shadow-minimal hover:bg-foreground/[0.02] transition-colors"
                       >
-                        Change...
+                        {t('change')}...
                       </button>
                     </div>
                   }
                 />
                 <SettingsToggle
-                  label="Local MCP Servers"
-                  description="Enable stdio subprocess servers"
+                  label={t('localMcpServers')}
+                  description={t('localMcpServersDesc')}
                   checked={localMcpEnabled}
                   onCheckedChange={handleLocalMcpEnabledChange}
                 />

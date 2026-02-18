@@ -573,7 +573,7 @@ function SessionItem({
               )}
               {!item.isProcessing && hasUnreadMessages(item) && (
                 <span className="shrink-0 px-1.5 py-0.5 text-[10px] font-medium rounded bg-accent text-white">
-                  New
+                  {t('new')}
                 </span>
               )}
 
@@ -590,7 +590,7 @@ function SessionItem({
                 )}
                 {item.lastMessageRole === 'plan' && (
                   <span className="shrink-0 h-[18px] px-1.5 text-[10px] font-medium rounded bg-success/10 text-success flex items-center whitespace-nowrap">
-                    Plan
+                    {t('plan')}
                   </span>
                 )}
                 {connectionDetails && (
@@ -691,39 +691,39 @@ function SessionItem({
                     <StyledDropdownMenuContent align="start">
                       <StyledDropdownMenuItem onClick={() => window.electronAPI.openUrl(item.sharedUrl!)}>
                         <Globe />
-                        Open in Browser
+                        {t('openInBrowser')}
                       </StyledDropdownMenuItem>
                       <StyledDropdownMenuItem onClick={async () => {
                         await navigator.clipboard.writeText(item.sharedUrl!)
-                        toast.success('Link copied to clipboard')
+                        toast.success(t('linkCopied'))
                       }}>
                         <Copy />
-                        Copy Link
+                        {t('copyLink')}
                       </StyledDropdownMenuItem>
                       <StyledDropdownMenuItem onClick={async () => {
                         const result = await window.electronAPI.sessionCommand(item.id, { type: 'updateShare' })
                         if (result && 'success' in result && result.success) {
-                          toast.success('Share updated')
+                          toast.success(t('shareUpdated'))
                         } else {
                           const errorMsg = result && 'error' in result ? result.error : undefined
-                          toast.error('Failed to update share', { description: errorMsg })
+                          toast.error(t('failedToUpdateShare'), { description: errorMsg })
                         }
                       }}>
                         <RefreshCw />
-                        Update Share
+                        {t('updateShare')}
                       </StyledDropdownMenuItem>
                       <StyledDropdownMenuSeparator />
                       <StyledDropdownMenuItem onClick={async () => {
                         const result = await window.electronAPI.sessionCommand(item.id, { type: 'revokeShare' })
                         if (result && 'success' in result && result.success) {
-                          toast.success('Sharing stopped')
+                          toast.success(t('sharingStopped'))
                         } else {
                           const errorMsg = result && 'error' in result ? result.error : undefined
-                          toast.error('Failed to stop sharing', { description: errorMsg })
+                          toast.error(t('failedToStopSharing'), { description: errorMsg })
                         }
                       }} variant="destructive">
                         <Link2Off />
-                        Stop Sharing
+                        {t('stopSharing')}
                       </StyledDropdownMenuItem>
                     </StyledDropdownMenuContent>
                   </DropdownMenu>

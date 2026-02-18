@@ -16,6 +16,7 @@
  */
 
 import * as React from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   AppWindow,
   Settings2,
@@ -78,13 +79,14 @@ export function SidebarMenu({
 }: SidebarMenuProps) {
   // Get menu components from context (works with both DropdownMenu and ContextMenu)
   const { MenuItem, Separator } = useMenuComponents()
+  const { t } = useTranslation('menu')
 
   // New Session: only shows "Open in New Window"
   if (type === 'newSession') {
     return (
       <MenuItem onClick={() => window.electronAPI.openUrl('craftagents://action/new-session?window=focused')}>
         <AppWindow className="h-3.5 w-3.5" />
-        <span className="flex-1">Open in New Window</span>
+        <span className="flex-1">{t('openInNewWindow')}</span>
       </MenuItem>
     )
   }
@@ -94,7 +96,7 @@ export function SidebarMenu({
     return (
       <MenuItem onClick={onConfigureStatuses}>
         <Settings2 className="h-3.5 w-3.5" />
-        <span className="flex-1">Configure Statuses</span>
+        <span className="flex-1">{t('configureStatuses')}</span>
       </MenuItem>
     )
   }
@@ -108,13 +110,13 @@ export function SidebarMenu({
         {onAddLabel && (
           <MenuItem onClick={() => onAddLabel(labelId)}>
             <Plus className="h-3.5 w-3.5" />
-            <span className="flex-1">Add New Label</span>
+            <span className="flex-1">{t('addNewLabel')}</span>
           </MenuItem>
         )}
         {onConfigureLabels && (
           <MenuItem onClick={() => onConfigureLabels(labelId)}>
             <Settings2 className="h-3.5 w-3.5" />
-            <span className="flex-1">Edit Labels</span>
+            <span className="flex-1">{t('editLabels')}</span>
           </MenuItem>
         )}
         {labelId && onDeleteLabel && (
@@ -122,7 +124,7 @@ export function SidebarMenu({
             <Separator />
             <MenuItem onClick={() => onDeleteLabel(labelId)}>
               <Trash2 className="h-3.5 w-3.5" />
-              <span className="flex-1">Delete Label</span>
+              <span className="flex-1">{t('deleteLabel')}</span>
             </MenuItem>
           </>
         )}
@@ -137,7 +139,7 @@ export function SidebarMenu({
         {onConfigureViews && (
           <MenuItem onClick={onConfigureViews}>
             <Settings2 className="h-3.5 w-3.5" />
-            <span className="flex-1">Edit Views</span>
+            <span className="flex-1">{t('editViews')}</span>
           </MenuItem>
         )}
         {viewId && onDeleteView && (
@@ -145,7 +147,7 @@ export function SidebarMenu({
             <Separator />
             <MenuItem onClick={() => onDeleteView(viewId)}>
               <Trash2 className="h-3.5 w-3.5" />
-              <span className="flex-1">Delete View</span>
+              <span className="flex-1">{t('deleteView')}</span>
             </MenuItem>
           </>
         )}
@@ -162,19 +164,19 @@ export function SidebarMenu({
 
     // Display label varies by source type
     const learnMoreLabel = sourceType === 'api'
-      ? 'Learn More about APIs'
+      ? t('learnMoreAboutAPIs')
       : sourceType === 'mcp'
-        ? 'Learn More about MCP'
+        ? t('learnMoreAboutMCP')
         : sourceType === 'local'
-          ? 'Learn More about Local Folders'
-          : 'Learn More about Sources'
+          ? t('learnMoreAboutLocalFolders')
+          : t('learnMoreAboutSources')
 
     return (
       <>
         {onAddSource && (
           <MenuItem onClick={onAddSource}>
             <Plus className="h-3.5 w-3.5" />
-            <span className="flex-1">Add Source</span>
+            <span className="flex-1">{t('addSource')}</span>
           </MenuItem>
         )}
         <Separator />
@@ -191,7 +193,7 @@ export function SidebarMenu({
     return (
       <MenuItem onClick={onAddSkill}>
         <Plus className="h-3.5 w-3.5" />
-        <span className="flex-1">Add Skill</span>
+        <span className="flex-1">{t('addSkill')}</span>
       </MenuItem>
     )
   }

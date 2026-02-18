@@ -1,0 +1,19 @@
+{
+  "templates": [
+    "总结您的 {source:Gmail} 收件箱，起草回复，并将笔记保存到 {source:Craft}",
+    "将 {file:截图} 转换为 {folder} 中的可用网站",
+    "从 {source:Linear} 获取问题，在 {source:Slack} 中研究，然后发布修复",
+    "转录 {file:语音备忘录} 并转换为 {source:Notion} 任务",
+    "分析 {file:电子表格} 并将洞察发布到 {source:Slack}",
+    "审核 {source:GitHub} PR，然后在 {source:Craft} 中总结更改",
+    "解析 {file:发票PDF} 并记录到 {source:Google Sheets}",
+    "使用 {source:Exa} 研究，撰写文档，保存到您的 {source:Obsidian} 库",
+    "重构 {folder} 中的代码，然后推送到 {source:GitHub}",
+    "将 {source:日历} 事件与 {source:Linear} 项目截止日期同步",
+    "将会议 {file:笔记} 自动转换为 {source:Jira} 工单",
+    "查询您的 {source:数据库} 并在新 {file:文档} 中可视化结果",
+    "获取 {source:Figma} 设计并在 {folder} 中生成 React 组件",
+    "将 {source:Slack} 话题合并为 {source:Notion} 的每周摘要",
+    "运行 {skill} 分析您的代码库并修复 {folder} 中的问题"
+  ]
+}
