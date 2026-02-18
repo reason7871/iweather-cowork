@@ -1,0 +1,10 @@
+{
+  "welcome": "欢迎使用 Craft Agents",
+  "getStarted": "开始使用",
+  "setupAPI": "设置 API",
+  "setupCredentials": "设置凭据",
+  "complete": "完成设置",
+  "skip": "跳过",
+  "continue": "继续",
+  "back": "返回"
+}

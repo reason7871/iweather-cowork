@@ -1,0 +1,12 @@
+{
+  "resetApp": "重置应用",
+  "resetWarning": "这将永久删除：",
+  "allWorkspaces": "所有工作区及其设置",
+  "allCredentials": "所有凭据和 API 密钥",
+  "allPreferences": "所有偏好设置和会话数据",
+  "backupFirst": "请先备份重要数据！",
+  "cannotUndo": "此操作无法撤销。",
+  "confirmMath": "确认请计算：{{a}} + {{b}} =",
+  "enterAnswer": "输入答案",
+  "resetAppButton": "重置应用"
+}

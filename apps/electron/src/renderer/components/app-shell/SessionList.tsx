@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect, useRef, useMemo } from "react"
 import { useAction, useActionLabel } from "@/actions"
+import { useTranslation } from "react-i18next"
 import { formatDistanceToNow, formatDistanceToNowStrict, isToday, isYesterday, format, startOfDay } from "date-fns"
 import type { Locale } from "date-fns"
 import { MoreHorizontal, Flag, Copy, Link2Off, CloudUpload, Globe, RefreshCw, Inbox, Check, Archive } from "lucide-react"
@@ -88,9 +89,9 @@ const shortTimeLocale: Pick<Locale, 'formatDistance'> = {
  * Format a date for the date header
  * Returns "Today", "Yesterday", or formatted date like "Dec 19"
  */
-function formatDateHeader(date: Date): string {
-  if (isToday(date)) return "Today"
-  if (isYesterday(date)) return "Yesterday"
+function formatDateHeader(date: Date, t: (key: string) => string): string {
+  if (isToday(date)) return t('today')
+  if (isYesterday(date)) return t('yesterday')
   return format(date, "MMM d")
 }
 
@@ -98,7 +99,10 @@ function formatDateHeader(date: Date): string {
  * Group sessions by date (day boundary)
  * Returns array of { date, sessions } sorted by date descending
  */
-function groupSessionsByDate(sessions: SessionMeta[]): Array<{ date: Date; label: string; sessions: SessionMeta[] }> {
+function groupSessionsByDate(
+  sessions: SessionMeta[],
+  t: (key: string) => string
+): Array<{ date: Date; label: string; sessions: SessionMeta[] }> {
   const groups = new Map<string, { date: Date; sessions: SessionMeta[] }>()
 
   for (const session of sessions) {
@@ -117,7 +121,7 @@ function groupSessionsByDate(sessions: SessionMeta[]): Array<{ date: Date; label
     .sort((a, b) => b.date.getTime() - a.date.getTime())
     .map(group => ({
       ...group,
-      label: formatDateHeader(group.date),
+      label: formatDateHeader(group.date, t),
     }))
 }
 
@@ -960,6 +964,7 @@ export function SessionList({
   const { navigate, navigateToSession } = useNavigation()
   const navState = useNavigationState()
   const { showEscapeOverlay } = useEscapeInterrupt()
+  const { t } = useTranslation('sessions')
 
   // Pre-flatten label tree once for efficient ID lookups in each SessionItem
   const flatLabels = useMemo(() => flattenLabels(labels), [labels])
@@ -1191,7 +1196,7 @@ export function SessionList({
   }, [hasMore, loadMore])
 
   // Group sessions by date (only used in normal mode, not search mode)
-  const dateGroups = useMemo(() => groupSessionsByDate(paginatedItems), [paginatedItems])
+  const dateGroups = useMemo(() => groupSessionsByDate(paginatedItems, t), [paginatedItems, t])
 
   // Create flat list for keyboard navigation (maintains order across groups/sections)
   const flatItems = useMemo(() => {
@@ -1279,60 +1284,60 @@ export function SessionList({
   const handleFlagWithToast = useCallback((sessionId: string) => {
     if (!onFlag) return
     onFlag(sessionId)
-    toast('Session flagged', {
-      description: 'Added to your flagged items',
+    toast(t('sessionFlagged'), {
+      description: t('addedToFlagged'),
       action: onUnflag ? {
-        label: 'Undo',
+        label: t('undo', { ns: 'common' }),
         onClick: () => onUnflag(sessionId),
       } : undefined,
     })
-  }, [onFlag, onUnflag])
+  }, [onFlag, onUnflag, t])
 
   const handleUnflagWithToast = useCallback((sessionId: string) => {
     if (!onUnflag) return
     onUnflag(sessionId)
-    toast('Flag removed', {
-      description: 'Removed from flagged items',
+    toast(t('flagRemoved'), {
+      description: t('removedFromFlagged'),
       action: onFlag ? {
-        label: 'Undo',
+        label: t('undo', { ns: 'common' }),
         onClick: () => onFlag(sessionId),
       } : undefined,
     })
-  }, [onFlag, onUnflag])
+  }, [onFlag, onUnflag, t])
 
   const handleArchiveWithToast = useCallback((sessionId: string) => {
     if (!onArchive) return
     onArchive(sessionId)
-    toast('Session archived', {
-      description: 'Moved to archive',
+    toast(t('sessionArchived'), {
+      description: t('movedToArchive'),
       action: onUnarchive ? {
-        label: 'Undo',
+        label: t('undo', { ns: 'common' }),
         onClick: () => onUnarchive(sessionId),
       } : undefined,
     })
-  }, [onArchive, onUnarchive])
+  }, [onArchive, onUnarchive, t])
 
   const handleUnarchiveWithToast = useCallback((sessionId: string) => {
     if (!onUnarchive) return
     onUnarchive(sessionId)
-    toast('Session restored', {
-      description: 'Moved from archive',
+    toast(t('sessionRestored'), {
+      description: t('movedFromArchive'),
       action: onArchive ? {
-        label: 'Undo',
+        label: t('undo', { ns: 'common' }),
         onClick: () => onArchive(sessionId),
       } : undefined,
     })
-  }, [onArchive, onUnarchive])
+  }, [onArchive, onUnarchive, t])
 
   const handleDeleteWithToast = useCallback(async (sessionId: string): Promise<boolean> => {
     // Confirmation dialog is shown by handleDeleteSession in App.tsx
     // We await so toast only shows after successful deletion (if user confirmed)
     const deleted = await onDelete(sessionId)
     if (deleted) {
-      toast('Session deleted')
+      toast(t('sessionDeleted'))
     }
     return deleted
-  }, [onDelete])
+  }, [onDelete, t])
 
   // Keyboard eligibility: determines when SessionList handles global keyboard shortcuts.
   // Two modes are supported:
@@ -1478,9 +1483,9 @@ export function SessionList({
             <EmptyMedia variant="icon">
               <Archive />
             </EmptyMedia>
-            <EmptyTitle>No archived sessions</EmptyTitle>
+            <EmptyTitle>{t('noArchivedSessions')}</EmptyTitle>
             <EmptyDescription>
-              Sessions you archive will appear here. Archive sessions to keep your list tidy while preserving conversations.
+              {t('archivedSessionsDesc')}
             </EmptyDescription>
           </EmptyHeader>
         </Empty>
@@ -1493,9 +1498,9 @@ export function SessionList({
           <EmptyMedia variant="icon">
             <Inbox />
           </EmptyMedia>
-          <EmptyTitle>No sessions yet</EmptyTitle>
+          <EmptyTitle>{t('noSessionsYet')}</EmptyTitle>
           <EmptyDescription>
-            Sessions with your agent appear here. Start one to get going.
+            {t('sessionsAppearHere')}
           </EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
@@ -1509,7 +1514,7 @@ export function SessionList({
             }}
             className="inline-flex items-center h-7 px-3 text-xs font-medium rounded-[8px] bg-background shadow-minimal hover:bg-foreground/[0.03] transition-colors"
           >
-            New Session
+            {t('newSession')}
           </button>
         </EmptyContent>
       </Empty>
@@ -1540,20 +1545,20 @@ export function SessionList({
           className="flex flex-col pb-14 min-w-0"
           data-focus-zone="session-list"
           role="listbox"
-          aria-label="Sessions"
+          aria-label={t('sessions')}
         >
           {/* No results message when in search mode */}
           {isSearchMode && flatItems.length === 0 && !isSearchingContent && (
             <div className="flex flex-col items-center justify-center py-12 px-4">
-              <p className="text-sm text-muted-foreground">No sessions found</p>
+              <p className="text-sm text-muted-foreground">{t('noSessionsFound')}</p>
               <p className="text-xs text-muted-foreground/60 mt-0.5">
-                Searched titles and message content
+                {t('searchedContent', { ns: 'common' })}
               </p>
               <button
                 onClick={() => onSearchChange?.('')}
                 className="text-xs text-foreground hover:underline mt-2"
               >
-                Clear search
+                {t('clearSearch', { ns: 'common' })}
               </button>
             </div>
           )}
@@ -1564,14 +1569,14 @@ export function SessionList({
               {/* No results in current filter message */}
               {matchingFilterItems.length === 0 && otherResultItems.length > 0 && (
                 <div className="px-4 py-3 text-sm text-muted-foreground">
-                  No results in current filter
+                  {t('noResultsInFilter')}
                 </div>
               )}
 
               {/* Matching Filters section - flat list, no date grouping */}
               {matchingFilterItems.length > 0 && (
                 <>
-                  <SessionListSectionHeader label="In Current View" />
+                  <SessionListSectionHeader label={t('inCurrentView')} />
                   {matchingFilterItems.map((item, index) => {
                     const flatIndex = sessionIndexMap.get(item.id) ?? 0
                     const itemProps = getItemProps(item, flatIndex)
@@ -1617,7 +1622,7 @@ export function SessionList({
               {/* Other Matches section - flat list, no date grouping */}
               {otherResultItems.length > 0 && (
                 <>
-                  <SessionListSectionHeader label="Other Conversations" />
+                  <SessionListSectionHeader label={t('otherConversations')} />
                   {otherResultItems.map((item, index) => {
                     const flatIndex = sessionIndexMap.get(item.id) ?? 0
                     const itemProps = getItemProps(item, flatIndex)
@@ -1720,11 +1725,11 @@ export function SessionList({
       <RenameDialog
         open={renameDialogOpen}
         onOpenChange={setRenameDialogOpen}
-        title="Rename Session"
+        title={t('renameSession')}
         value={renameName}
         onValueChange={setRenameName}
         onSubmit={handleRenameSubmit}
-        placeholder="Enter session name..."
+        placeholder={t('enterSessionName')}
       />
     </div>
   )

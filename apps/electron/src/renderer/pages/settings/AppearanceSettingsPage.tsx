@@ -31,6 +31,8 @@ import { useWorkspaceIcons } from '@/hooks/useWorkspaceIcon'
 import { Info_DataTable, SortableHeader } from '@/components/info/Info_DataTable'
 import { Info_Badge } from '@/components/info/Info_Badge'
 import type { PresetTheme } from '@config/theme'
+import { useLanguage } from '@/i18n/LanguageContext'
+import { useTranslation } from 'react-i18next'
 
 export const meta: DetailsPageMeta = {
   navigator: 'settings',
@@ -95,6 +97,8 @@ const toolIconColumns: ColumnDef<ToolIconMapping>[] = [
 export default function AppearanceSettingsPage() {
   const { mode, setMode, colorTheme, setColorTheme, font, setFont, activeWorkspaceId, setWorkspaceColorTheme } = useTheme()
   const { workspaces } = useAppShellContext()
+  const { t } = useTranslation('settings')
+  const { language, setLanguage, supportedLanguages } = useLanguage()
 
   // Fetch workspace icons as data URLs (file:// URLs don't work in renderer)
   const workspaceIconMap = useWorkspaceIcons(workspaces)
@@ -225,7 +229,7 @@ export default function AppearanceSettingsPage() {
   return (
     <div className="h-full flex flex-col">
       <PanelHeader
-        title="Appearance"
+        title={t('appearance')}
         actions={<HeaderMenu route={routes.view.settings('appearance')} helpFeature="themes" />}
       />
       <div className="flex-1 min-h-0 mask-fade-y">
@@ -234,33 +238,33 @@ export default function AppearanceSettingsPage() {
             <div className="space-y-8">
 
               {/* Default Theme */}
-              <SettingsSection title="Default Theme">
+              <SettingsSection title={t('defaultTheme')}>
                 <SettingsCard>
-                  <SettingsRow label="Mode">
+                  <SettingsRow label={t('mode')}>
                     <SettingsSegmentedControl
                       value={mode}
                       onValueChange={setMode}
                       options={[
-                        { value: 'system', label: 'System', icon: <Monitor className="w-4 h-4" /> },
-                        { value: 'light', label: 'Light', icon: <Sun className="w-4 h-4" /> },
-                        { value: 'dark', label: 'Dark', icon: <Moon className="w-4 h-4" /> },
+                        { value: 'system', label: t('system'), icon: <Monitor className="w-4 h-4" /> },
+                        { value: 'light', label: t('light'), icon: <Sun className="w-4 h-4" /> },
+                        { value: 'dark', label: t('dark'), icon: <Moon className="w-4 h-4" /> },
                       ]}
                     />
                   </SettingsRow>
-                  <SettingsRow label="Color theme">
+                  <SettingsRow label={t('colorTheme')}>
                     <SettingsMenuSelect
                       value={colorTheme}
                       onValueChange={setColorTheme}
                       options={themeOptions}
                     />
                   </SettingsRow>
-                  <SettingsRow label="Font">
+                  <SettingsRow label={t('font')}>
                     <SettingsSegmentedControl
                       value={font}
                       onValueChange={setFont}
                       options={[
                         { value: 'inter', label: 'Inter' },
-                        { value: 'system', label: 'System' },
+                        { value: 'system', label: t('system') },
                       ]}
                     />
                   </SettingsRow>
@@ -270,8 +274,8 @@ export default function AppearanceSettingsPage() {
               {/* Workspace Themes */}
               {workspaces.length > 0 && (
                 <SettingsSection
-                  title="Workspace Themes"
-                  description="Override theme settings per workspace"
+                  title={t('workspaceThemes')}
+                  description={t('workspaceThemesDesc')}
                 >
                   <SettingsCard>
                     {workspaces.map((workspace) => {
@@ -299,7 +303,7 @@ export default function AppearanceSettingsPage() {
                             value={hasCustomTheme ? wsTheme : 'default'}
                             onValueChange={(value) => handleWorkspaceThemeChange(workspace.id, value)}
                             options={[
-                              { value: 'default', label: appDefaultLabel ? `Use Default (${appDefaultLabel})` : 'Use Default' },
+                              { value: 'default', label: appDefaultLabel ? `${t('useDefault')} (${appDefaultLabel})` : t('useDefault') },
                               ...presetThemes
                                 .filter(t => t.id !== 'default')
                                 .map(t => ({
@@ -316,17 +320,27 @@ export default function AppearanceSettingsPage() {
               )}
 
               {/* Interface */}
-              <SettingsSection title="Interface">
+              <SettingsSection title={t('interface')}>
                 <SettingsCard>
+                  <SettingsRow label={t('language')} description={t('languageDesc')}>
+                    <SettingsMenuSelect
+                      value={language}
+                      onValueChange={(value) => setLanguage(value as typeof language)}
+                      options={supportedLanguages.map(lang => ({
+                        value: lang.code,
+                        label: lang.nativeName,
+                      }))}
+                    />
+                  </SettingsRow>
                   <SettingsToggle
-                    label="Connection icons"
-                    description="Show provider icons in the session list and model selector"
+                    label={t('connectionIcons')}
+                    description={t('connectionIconsDesc')}
                     checked={showConnectionIcons}
                     onCheckedChange={handleConnectionIconsChange}
                   />
                   <SettingsToggle
-                    label="Rich tool descriptions"
-                    description="Add action names and intent descriptions to all tool calls. Provides richer activity context in sessions."
+                    label={t('richToolDescriptions')}
+                    description={t('richToolDescriptionsDesc')}
                     checked={richToolDescriptions}
                     onCheckedChange={handleRichToolDescriptionsChange}
                   />
@@ -335,8 +349,8 @@ export default function AppearanceSettingsPage() {
 
               {/* Tool Icons — shows the command → icon mapping used in turn cards */}
               <SettingsSection
-                title="Tool Icons"
-                description="Icons shown next to CLI commands in chat activity. Stored in ~/.craft-agent/tool-icons/."
+                title={t('toolIcons')}
+                description={t('toolIconsDesc')}
                 action={
                   toolIconsJsonPath ? (
                     <EditPopover
@@ -354,9 +368,9 @@ export default function AppearanceSettingsPage() {
                   <Info_DataTable
                     columns={toolIconColumns}
                     data={toolIcons}
-                    searchable={{ placeholder: 'Search tools...' }}
+                    searchable={{ placeholder: t('searchTools') }}
                     maxHeight={480}
-                    emptyContent="No tool icon mappings found"
+                    emptyContent={t('noToolIcons')}
                   />
                 </SettingsCard>
               </SettingsSection>

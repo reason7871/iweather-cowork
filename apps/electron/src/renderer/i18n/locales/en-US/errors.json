@@ -1,0 +1,12 @@
+{
+  "resetApp": "Reset App",
+  "resetWarning": "This will permanently delete:",
+  "allWorkspaces": "All workspaces and their settings",
+  "allCredentials": "All credentials and API keys",
+  "allPreferences": "All preferences and session data",
+  "backupFirst": "Back up any important data first!",
+  "cannotUndo": "This action cannot be undone.",
+  "confirmMath": "To confirm, solve: {{a}} + {{b}} =",
+  "enterAnswer": "Enter answer",
+  "resetAppButton": "Reset App"
+}

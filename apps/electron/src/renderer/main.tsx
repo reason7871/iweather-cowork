@@ -9,6 +9,9 @@ import { ThemeProvider } from './context/ThemeContext'
 import { windowWorkspaceIdAtom } from './atoms/sessions'
 import { Toaster } from '@/components/ui/sonner'
 import './index.css'
+// i18n configuration - must be imported before any component that uses translations
+import './i18n'
+import { LanguageProvider } from './i18n/LanguageContext'
 
 // Known-harmless console messages that should NOT be sent to Sentry.
 // These are dev-mode noise or expected warnings that aren't actionable.
@@ -94,10 +97,12 @@ function Root() {
   const workspaceId = useAtomValue(windowWorkspaceIdAtom)
 
   return (
-    <ThemeProvider activeWorkspaceId={workspaceId}>
-      <App />
-      <Toaster />
-    </ThemeProvider>
+    <LanguageProvider>
+      <ThemeProvider activeWorkspaceId={workspaceId}>
+        <App />
+        <Toaster />
+      </ThemeProvider>
+    </LanguageProvider>
   )
 }
 
