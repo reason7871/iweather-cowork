@@ -16,6 +16,7 @@ import zhSessions from './locales/zh-CN/sessions.json'
 import zhErrors from './locales/zh-CN/errors.json'
 import zhAuth from './locales/zh-CN/auth.json'
 import zhHints from './locales/zh-CN/hints.json'
+import zhOnboarding from './locales/zh-CN/onboarding.json'
 
 // Import English translations
 import enCommon from './locales/en-US/common.json'
@@ -25,6 +26,7 @@ import enSessions from './locales/en-US/sessions.json'
 import enErrors from './locales/en-US/errors.json'
 import enAuth from './locales/en-US/auth.json'
 import enHints from './locales/en-US/hints.json'
+import enOnboarding from './locales/en-US/onboarding.json'
 
 // Language resources
 const resources = {
@@ -36,6 +38,7 @@ const resources = {
     errors: zhErrors,
     auth: zhAuth,
     hints: zhHints,
+    onboarding: zhOnboarding,
   },
   'en-US': {
     common: enCommon,
@@ -45,6 +48,7 @@ const resources = {
     errors: enErrors,
     auth: enAuth,
     hints: enHints,
+    onboarding: enOnboarding,
   },
 }
 
@@ -88,7 +92,7 @@ i18n
     lng: 'zh-CN',  // Default to Chinese
     fallbackLng: 'en-US',
     defaultNS: 'common',
-    ns: ['common', 'menu', 'settings', 'sessions', 'errors', 'auth', 'hints'],
+    ns: ['common', 'menu', 'settings', 'sessions', 'errors', 'auth', 'hints', 'onboarding'],
     interpolation: {
       escapeValue: false,
     },

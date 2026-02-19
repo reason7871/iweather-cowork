@@ -3,27 +3,16 @@ import { cn } from "@/lib/utils"
 import { Check, CreditCard, Key, Cpu } from "lucide-react"
 import { StepFormLayout, BackButton, ContinueButton } from "./primitives"
 import type { LlmAuthType, LlmProviderType } from "@iweather/shared/config/llm-connections"
+import { useTranslation } from "react-i18next"
 
 /** Provider segment for the segmented control */
 export type ProviderSegment = 'anthropic' | 'openai' | 'copilot'
 
-const SEGMENT_LABELS: Record<ProviderSegment, string> = {
-  anthropic: 'Claude',
-  openai: 'Codex',
-  copilot: 'GitHub Copilot',
-}
-
-const BetaBadge = () => (
+const BetaBadge = ({ text }: { text: string }) => (
   <span className="inline px-1.5 pt-[2px] pb-[3px] text-[10px] font-accent font-bold rounded-[4px] bg-accent text-background ml-1 relative -top-[1px]">
-    Beta
+    {text}
   </span>
 )
-
-const SEGMENT_DESCRIPTIONS: Record<ProviderSegment, React.ReactNode> = {
-  anthropic: <>Use Claude Agent SDK as the main agent.<br />Configure with your Claude subscription or API key.</>,
-  openai: <>Use Codex CLI as the main agent.<BetaBadge /><br />Configure with your ChatGPT subscription or OpenAI API key.</>,
-  copilot: <>Use Copilot Agent as the main agent.<BetaBadge /><br />Configure with your GitHub Copilot subscription.</>,
-}
 
 /**
  * API setup method for onboarding.
@@ -65,8 +54,8 @@ export function apiSetupMethodToConnectionTypes(method: ApiSetupMethod): {
 
 interface ApiSetupOption {
   id: ApiSetupMethod
-  name: string
-  description: string
+  nameKey: string
+  descriptionKey: string
   icon: React.ReactNode
   providerType: LlmProviderType
 }
@@ -74,36 +63,36 @@ interface ApiSetupOption {
 const API_SETUP_OPTIONS: ApiSetupOption[] = [
   {
     id: 'claude_oauth',
-    name: 'Claude Pro/Max',
-    description: 'Use your Claude subscription for unlimited access.',
+    nameKey: 'claudePro',
+    descriptionKey: 'claudeProDescription',
     icon: <CreditCard className="size-4" />,
     providerType: 'anthropic',
   },
   {
     id: 'anthropic_api_key',
-    name: 'Anthropic API Key',
-    description: 'Pay-as-you-go via Anthropic, OpenRouter, or compatible APIs.',
+    nameKey: 'anthropicApiKey',
+    descriptionKey: 'anthropicApiDescription',
     icon: <Key className="size-4" />,
     providerType: 'anthropic',
   },
   {
     id: 'chatgpt_oauth',
-    name: 'Codex · ChatGPT Plus/Pro',
-    description: 'Use your ChatGPT Plus or Pro subscription with Codex.',
+    nameKey: 'codexChatGpt',
+    descriptionKey: 'codexChatGptDescription',
     icon: <Cpu className="size-4" />,
     providerType: 'openai',
   },
   {
     id: 'openai_api_key',
-    name: 'Codex · OpenAI API Key',
-    description: 'Pay-as-you-go via the OpenAI Platform API.',
+    nameKey: 'codexOpenAI',
+    descriptionKey: 'codexOpenAIDescription',
     icon: <Key className="size-4" />,
     providerType: 'openai',
   },
   {
     id: 'copilot_oauth',
-    name: 'Copilot · GitHub',
-    description: 'Use your GitHub Copilot subscription.',
+    nameKey: 'copilotGitHub',
+    descriptionKey: 'copilotGitHubDescription',
     icon: <Cpu className="size-4" />,
     providerType: 'copilot',
   },
@@ -125,10 +114,12 @@ function OptionButton({
   option,
   isSelected,
   onSelect,
+  t,
 }: {
   option: ApiSetupOption
   isSelected: boolean
   onSelect: (method: ApiSetupMethod) => void
+  t: (key: string) => string
 }) {
   return (
     <button
@@ -155,10 +146,10 @@ function OptionButton({
       {/* Content */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <span className="font-medium text-sm">{option.name}</span>
+          <span className="font-medium text-sm">{t(option.nameKey)}</span>
         </div>
         <p className="mt-1 text-xs text-muted-foreground">
-          {option.description}
+          {t(option.descriptionKey)}
         </p>
       </div>
 
@@ -183,11 +174,21 @@ function OptionButton({
 function ProviderSegmentedControl({
   activeSegment,
   onSegmentChange,
+  t,
 }: {
   activeSegment: ProviderSegment
   onSegmentChange: (segment: ProviderSegment) => void
+  t: (key: string) => string
 }) {
   const segments: ProviderSegment[] = ['anthropic', 'openai', 'copilot']
+
+  const getSegmentLabel = (segment: ProviderSegment) => {
+    switch (segment) {
+      case 'anthropic': return t('claude')
+      case 'openai': return t('codex')
+      case 'copilot': return t('copilot')
+    }
+  }
 
   return (
     <div className="flex rounded-xl bg-foreground/[0.03] p-1 mb-4">
@@ -202,11 +203,26 @@ function ProviderSegmentedControl({
               : "text-muted-foreground hover:text-foreground"
           )}
         >
-          {SEGMENT_LABELS[segment]}
+          {getSegmentLabel(segment)}
         </button>
       ))}
     </div>
   )
+}
+
+/**
+ * Get segment description with i18n support
+ */
+function getSegmentDescription(segment: ProviderSegment, t: (key: string) => string) {
+  const beta = t('beta')
+  switch (segment) {
+    case 'anthropic':
+      return <>{t('claudeDescription')}<br />{t('claudeConfig')}</>
+    case 'openai':
+      return <>{t('codexDescription')}<BetaBadge text={beta} /><br />{t('codexConfig')}</>
+    case 'copilot':
+      return <>{t('copilotDescription')}<BetaBadge text={beta} /><br />{t('copilotConfig')}</>
+  }
 }
 
 /**
@@ -224,6 +240,7 @@ export function APISetupStep({
   onBack,
   initialSegment = 'anthropic',
 }: APISetupStepProps) {
+  const { t } = useTranslation('onboarding')
   const [activeSegment, setActiveSegment] = useState<ProviderSegment>(initialSegment)
 
   // Filter options based on active segment
@@ -238,8 +255,8 @@ export function APISetupStep({
 
   return (
     <StepFormLayout
-      title="Set up your Agent"
-      description={<>Select how you'd like to power your AI agents.<br />You can add more connections later.</>}
+      title={t('setUpAgent')}
+      description={<>{t('setUpAgentDescription')}<br />{t('addMoreConnections')}</>}
       actions={
         <>
           <BackButton onClick={onBack} />
@@ -251,12 +268,13 @@ export function APISetupStep({
       <ProviderSegmentedControl
         activeSegment={activeSegment}
         onSegmentChange={handleSegmentChange}
+        t={t}
       />
 
       {/* Segment description */}
       <div className="bg-foreground-2 rounded-[8px] p-4 mb-3">
         <p className="text-sm text-muted-foreground text-center">
-          {SEGMENT_DESCRIPTIONS[activeSegment]}
+          {getSegmentDescription(activeSegment, t)}
         </p>
       </div>
 
@@ -268,6 +286,7 @@ export function APISetupStep({
             option={option}
             isSelected={option.id === selectedMethod}
             onSelect={onSelect}
+            t={t}
           />
         ))}
       </div>
