@@ -403,7 +403,7 @@ function FilterLabelItems({
                 />
               </StyledDropdownMenuSubTrigger>
               <StyledDropdownMenuSubContent minWidth="min-w-[140px]">
-                <FilterModeSubMenuItems mode={mode} {...makeModeCallbacks(label.id)} />
+                <FilterModeSubMenuItems mode={mode} {...makeModeCallbacks(label.id)} t={t} />
               </StyledDropdownMenuSubContent>
             </DropdownMenuSub>
           )
@@ -2624,6 +2624,7 @@ function AppShellContent({
                                             next.delete(state.id)
                                             return next
                                           })}
+                                          t={t}
                                         />
                                       </StyledDropdownMenuSubContent>
                                     </DropdownMenuSub>
@@ -2655,6 +2656,7 @@ function AppShellContent({
                                             next.delete(labelId)
                                             return next
                                           })}
+                                          t={t}
                                         />
                                       </StyledDropdownMenuSubContent>
                                     </DropdownMenuSub>
@@ -2702,6 +2704,7 @@ function AppShellContent({
                                               next.delete(state.id)
                                               return next
                                             })}
+                                            t={t}
                                           />
                                         </StyledDropdownMenuSubContent>
                                       </DropdownMenuSub>
@@ -2753,6 +2756,7 @@ function AppShellContent({
                                     labelFilter={labelFilter}
                                     setLabelFilter={setLabelFilter}
                                     pinnedLabelId={pinnedFilters.pinnedLabelId}
+                                    t={t}
                                   />
                                 )}
                               </StyledDropdownMenuSubContent>
@@ -2823,6 +2827,7 @@ function AppShellContent({
                                                   next.delete(state.id)
                                                   return next
                                                 })}
+                                                t={t}
                                               />
                                             </StyledDropdownMenuSubContent>
                                           </DropdownMenuSub>
@@ -2912,6 +2917,7 @@ function AppShellContent({
                                                   next.delete(item.id)
                                                   return next
                                                 })}
+                                                t={t}
                                               />
                                             </StyledDropdownMenuSubContent>
                                           </DropdownMenuSub>

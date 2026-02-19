@@ -337,6 +337,8 @@ interface SessionItemProps {
   onRangeSelect?: () => void
   /** Callback to focus the session-list zone (enables keyboard shortcuts) */
   onFocusZone?: () => void
+  /** Translation function */
+  t: (key: string, options?: Record<string, unknown>) => string
 }
 
 /**
@@ -374,6 +376,7 @@ function SessionItem({
   onToggleSelect,
   onRangeSelect,
   onFocusZone,
+  t,
 }: SessionItemProps) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [contextMenuOpen, setContextMenuOpen] = useState(false)
@@ -1613,6 +1616,7 @@ export function SessionList({
                         onToggleSelect={() => handleToggleSelect(item, flatIndex)}
                         onRangeSelect={() => handleRangeSelect(flatIndex)}
                         onFocusZone={() => focusZone('session-list', { intent: 'click', moveFocus: false })}
+                        t={t}
                       />
                     )
                   })}
@@ -1659,6 +1663,7 @@ export function SessionList({
                         onToggleSelect={() => handleToggleSelect(item, flatIndex)}
                         onRangeSelect={() => handleRangeSelect(flatIndex)}
                         onFocusZone={() => focusZone('session-list', { intent: 'click', moveFocus: false })}
+                        t={t}
                       />
                     )
                   })}
@@ -1706,6 +1711,7 @@ export function SessionList({
                       onToggleSelect={() => handleToggleSelect(item, flatIndex)}
                       onRangeSelect={() => handleRangeSelect(flatIndex)}
                       onFocusZone={() => focusZone('session-list', { intent: 'click', moveFocus: false })}
+                      t={t}
                     />
                   )
                 })}
