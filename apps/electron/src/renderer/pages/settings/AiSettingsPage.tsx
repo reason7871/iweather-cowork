@@ -91,7 +91,7 @@ export const meta: DetailsPageMeta = {
 // ============================================
 
 /** Get user-friendly message for credential health issue */
-function getHealthIssueMessage(issue: CredentialHealthIssue, t: (key: string) => string): string {
+function getHealthIssueMessage(issue: CredentialHealthIssue, t: (key: string, options?: Record<string, unknown>) => string): string {
   switch (issue.type) {
     case 'file_corrupted':
       return t('credentialFileCorrupted')
@@ -107,7 +107,7 @@ function getHealthIssueMessage(issue: CredentialHealthIssue, t: (key: string) =>
 interface CredentialHealthBannerProps {
   issues: CredentialHealthIssue[]
   onReauthenticate: () => void
-  t: (key: string) => string
+  t: (key: string, options?: Record<string, unknown>) => string
 }
 
 function CredentialHealthBanner({ issues, onReauthenticate, t }: CredentialHealthBannerProps) {
@@ -154,7 +154,7 @@ interface ConnectionRowProps {
   onReauthenticate: () => void
   validationState: ValidationState
   validationError?: string
-  t: (key: string) => string
+  t: (key: string, options?: Record<string, unknown>) => string
 }
 
 function ConnectionRow({ connection, isLastConnection, onRenameClick, onDelete, onSetDefault, onValidate, onReauthenticate, validationState, validationError, t }: ConnectionRowProps) {
@@ -280,7 +280,7 @@ interface WorkspaceOverrideCardProps {
   workspace: Workspace
   llmConnections: LlmConnectionWithStatus[]
   onSettingsChange: () => void
-  t: (key: string) => string
+  t: (key: string, options?: Record<string, unknown>) => string
 }
 
 function WorkspaceOverrideCard({ workspace, llmConnections, onSettingsChange, t }: WorkspaceOverrideCardProps) {

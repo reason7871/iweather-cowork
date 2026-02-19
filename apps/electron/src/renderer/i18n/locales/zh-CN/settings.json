@@ -80,5 +80,26 @@
   "credentialFileCorrupted": "凭据文件已损坏。请重新认证。",
   "credentialDecryptionFailed": "检测到来自其他设备的凭据。请在此设备上重新认证。",
   "noCredentials": "未找到默认连接的凭据。",
-  "credentialIssueGeneric": "检测到凭据问题。"
+  "credentialIssueGeneric": "检测到凭据问题。",
+  "settingsMenu": {
+    "app": "应用程序",
+    "appDesc": "通知和更新",
+    "ai": "AI",
+    "aiDesc": "模型、思考、连接",
+    "appearance": "外观",
+    "appearanceDesc": "主题、字体、工具图标",
+    "input": "输入",
+    "inputDesc": "发送键、拼写检查",
+    "workspace": "工作区",
+    "workspaceDesc": "名称、图标、工作目录",
+    "permissions": "权限",
+    "permissionsDesc": "探索模式规则",
+    "labels": "标签",
+    "labelsDesc": "管理会话标签",
+    "shortcuts": "快捷键",
+    "shortcutsDesc": "键盘快捷键",
+    "preferences": "首选项",
+    "preferencesDesc": "用户首选项"
+  },
+  "openInNewWindow": "在新窗口中打开"
 }

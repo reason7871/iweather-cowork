@@ -9,6 +9,7 @@
 
 import { useState } from 'react'
 import { MoreHorizontal, AppWindow } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -55,15 +56,20 @@ interface SettingsItemRowProps {
   isSelected: boolean
   isFirst: boolean
   onSelect: () => void
+  t: (key: string) => string
 }
 
 /**
  * SettingsItemRow - Individual settings item with dropdown menu
  * Tracks menu open state to keep "..." button visible when menu is open
  */
-function SettingsItemRow({ item, isSelected, isFirst, onSelect }: SettingsItemRowProps) {
+function SettingsItemRow({ item, isSelected, isFirst, onSelect, t }: SettingsItemRowProps) {
   const [menuOpen, setMenuOpen] = useState(false)
   const Icon = item.icon
+
+  // Get translated label and description
+  const label = t(`settingsMenu.${item.id}`)
+  const description = t(`settingsMenu.${item.id}Desc`)
 
   // Open settings page in a new window via deep link
   const handleOpenInNewWindow = () => {
@@ -112,10 +118,10 @@ function SettingsItemRow({ item, isSelected, isFirst, onSelect }: SettingsItemRo
                 isSelected ? 'text-foreground' : 'text-foreground/80'
               )}
             >
-              {item.label}
+              {label}
             </span>
             <span className="text-xs text-foreground/60 line-clamp-1">
-              {item.description}
+              {description}
             </span>
           </div>
         </button>
@@ -137,7 +143,7 @@ function SettingsItemRow({ item, isSelected, isFirst, onSelect }: SettingsItemRo
                 <DropdownMenuProvider>
                   <StyledDropdownMenuItem onClick={handleOpenInNewWindow}>
                     <AppWindow className="h-3.5 w-3.5" />
-                    <span className="flex-1">Open in New Window</span>
+                    <span className="flex-1">{t('openInNewWindow')}</span>
                   </StyledDropdownMenuItem>
                 </DropdownMenuProvider>
               </StyledDropdownMenuContent>
@@ -153,6 +159,8 @@ export default function SettingsNavigator({
   selectedSubpage,
   onSelectSubpage,
 }: SettingsNavigatorProps) {
+  const { t } = useTranslation('settings')
+
   return (
     <div className="flex flex-col h-full">
       <div className="flex-1 overflow-y-auto">
@@ -164,6 +172,7 @@ export default function SettingsNavigator({
               isSelected={selectedSubpage === item.id}
               isFirst={index === 0}
               onSelect={() => onSelectSubpage(item.id)}
+              t={t}
             />
           ))}
         </div>
