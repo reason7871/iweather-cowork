@@ -1360,6 +1360,7 @@ export default function App() {
           onSubmitCredential={onboarding.handleSubmitCredential}
           onStartOAuth={onboarding.handleStartOAuth}
           onFinish={onboarding.handleFinish}
+          onSkip={onboarding.handleSkip}
           isWaitingForCode={onboarding.isWaitingForCode}
           onSubmitAuthCode={onboarding.handleSubmitAuthCode}
           onCancelOAuth={onboarding.handleCancelOAuth}

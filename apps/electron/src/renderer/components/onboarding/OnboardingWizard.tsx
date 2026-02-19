@@ -39,6 +39,8 @@ interface OnboardingWizardProps {
   onSubmitCredential: (data: ApiKeySubmitData) => void
   onStartOAuth?: (methodOverride?: ApiSetupMethod) => void
   onFinish: () => void
+  /** Skip API setup and go directly to main app */
+  onSkip?: () => void
 
   // Claude OAuth (two-step flow)
   isWaitingForCode?: boolean
@@ -74,6 +76,7 @@ export function OnboardingWizard({
   onSubmitCredential,
   onStartOAuth,
   onFinish,
+  onSkip,
   // Two-step OAuth flow
   isWaitingForCode,
   onSubmitAuthCode,
@@ -94,6 +97,7 @@ export function OnboardingWizard({
           <WelcomeStep
             isExistingUser={state.isExistingUser}
             onContinue={onContinue}
+            onSkip={onSkip}
             isLoading={state.isCheckingGitBash}
           />
         )

@@ -47,6 +47,7 @@ interface UseOnboardingReturn {
   // Wizard actions
   handleContinue: () => void
   handleBack: () => void
+  handleSkip: () => void
 
   // API Setup
   handleSelectApiSetupMethod: (method: ApiSetupMethod) => void
@@ -598,6 +599,12 @@ export function useOnboarding({
     setState(s => ({ ...s, step: 'welcome' }))
   }, [])
 
+  // Skip onboarding and go directly to main app
+  const handleSkip = useCallback(() => {
+    // Mark as complete without configuring any LLM connection
+    setState(s => ({ ...s, step: 'complete', completionStatus: 'complete' }))
+  }, [])
+
   // Reset onboarding to initial state (used after logout or modal close)
   const reset = useCallback(() => {
     setState({
@@ -620,6 +627,7 @@ export function useOnboarding({
     state,
     handleContinue,
     handleBack,
+    handleSkip,
     handleSelectApiSetupMethod,
     handleSubmitCredential,
     handleStartOAuth,
