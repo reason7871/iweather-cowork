@@ -357,7 +357,7 @@ export default function AppearanceSettingsPage() {
                       trigger={<EditButton />}
                       {...getEditConfig('edit-tool-icons', toolIconsJsonPath)}
                       secondaryAction={{
-                        label: 'Edit File',
+                        label: t('editFile'),
                         filePath: toolIconsJsonPath,
                       }}
                     />

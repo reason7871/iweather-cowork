@@ -16,7 +16,7 @@
   "richToolDescriptions": "丰富工具描述",
   "richToolDescriptionsDesc": "为所有工具调用添加操作名称和意图描述，提供更丰富的活动上下文",
   "toolIcons": "工具图标",
-  "toolIconsDesc": "聊天活动中 CLI 命令旁显示的图标。存储在 ~/.craft-agent/tool-icons/。",
+  "toolIconsDesc": "聊天活动中 CLI 命令旁显示的图标。存储在 ~/.iweather/tool-icons/。",
   "searchTools": "搜索工具...",
   "noToolIcons": "未找到工具图标映射",
   "tool": "工具",
@@ -81,6 +81,10 @@
   "credentialDecryptionFailed": "检测到来自其他设备的凭据。请在此设备上重新认证。",
   "noCredentials": "未找到默认连接的凭据。",
   "credentialIssueGeneric": "检测到凭据问题。",
+  "openInNewWindow": "在新窗口中打开",
+  "editFile": "编辑文件",
+  "learnMore": "了解更多",
+
   "settingsMenu": {
     "app": "应用程序",
     "appDesc": "通知和更新",
@@ -101,5 +105,112 @@
     "preferences": "首选项",
     "preferencesDesc": "用户首选项"
   },
-  "openInNewWindow": "在新窗口中打开"
+
+  "appPage": {
+    "title": "应用程序",
+    "notifications": "通知",
+    "desktopNotifications": "桌面通知",
+    "desktopNotificationsDesc": "当 AI 完成对话中的工作时收到通知。",
+    "power": "电源",
+    "keepScreenAwake": "保持屏幕常亮",
+    "keepScreenAwakeDesc": "会话运行时防止屏幕关闭。",
+    "about": "关于",
+    "version": "版本",
+    "loading": "加载中...",
+    "checkForUpdates": "检查更新",
+    "checking": "检查中...",
+    "checkNow": "立即检查",
+    "updateReady": "更新就绪",
+    "downloading": "正在下载",
+    "restartToUpdate": "重启以更新到 v{{version}}"
+  },
+
+  "inputPage": {
+    "title": "输入",
+    "typing": "输入",
+    "typingDesc": "控制聊天输入框中的文本输入方式。",
+    "autoCapitalisation": "自动大写",
+    "autoCapitalisationDesc": "输入消息时自动将首字母大写。",
+    "spellCheck": "拼写检查",
+    "spellCheckDesc": "输入时在拼写错误的单词下显示下划线。",
+    "sending": "发送",
+    "sendingDesc": "选择消息发送方式。",
+    "sendMessageWith": "发送消息按键",
+    "sendMessageWithDesc": "发送消息的键盘快捷键",
+    "enter": "Enter",
+    "enterDesc": "使用 Shift+Enter 换行",
+    "cmdEnter": "⌘ Enter",
+    "ctrlEnter": "Ctrl+Enter",
+    "cmdEnterDesc": "使用 Enter 换行"
+  },
+
+  "permissionsPage": {
+    "title": "权限",
+    "aboutPermissions": "关于权限",
+    "aboutPermissionsDesc1": "权限控制智能体的自主程度。在探索模式下，智能体只能读取和研究，非常适合在做出更改之前了解问题。准备好后，切换到执行模式让智能体自主执行计划。",
+    "aboutPermissionsDesc2": "推荐工作流程：从探索模式开始让智能体调查，审查提议的计划，然后放心地执行。",
+    "defaultPermissions": "默认权限",
+    "defaultPermissionsDesc": "探索模式下允许的应用级模式。不在此列表中的命令将被阻止。",
+    "noDefaultPermissions": "未找到默认权限。",
+    "defaultPermissionsPath": "默认权限应位于 ~/.iweather/permissions/default.json",
+    "workspaceCustomizations": "工作区自定义",
+    "workspaceCustomizationsDesc": "扩展上述应用默认设置的工作区级模式。",
+    "noCustomPermissions": "未配置自定义权限。",
+    "customPermissionsPath": "在工作区中创建 permissions.json 文件以添加自定义规则。"
+  },
+
+  "labelsPage": {
+    "title": "标签",
+    "aboutLabels": "关于标签",
+    "aboutLabelsDesc1": "标签帮助您使用彩色标签整理会话。使用它们按项目、主题或优先级对对话进行分类，便于稍后筛选和查找相关会话。",
+    "aboutLabelsDesc2": "每个标签可以选择带有特定类型（文本、数字或日期）的值。这使标签成为结构化元数据，例如，值为 3 的\"优先级\"标签，或带有日期的\"截止日期\"标签。",
+    "aboutLabelsDesc3": "自动应用规则在消息匹配正则表达式模式时自动分配标签。例如，粘贴 Linear 问题 URL 可以自动为会话标记项目名称和问题 ID，无需手动标记。",
+    "labelHierarchy": "标签层级",
+    "labelHierarchyDesc": "为此工作区配置的所有标签。标签可以嵌套以形成分组。",
+    "noLabelsConfigured": "未配置标签。",
+    "noLabelsHint": "标签可以由智能体创建，也可以通过编辑工作区中的 labels/config.json 创建。",
+    "autoApplyRules": "自动应用规则",
+    "autoApplyRulesDesc": "在用户消息中匹配时自动应用标签的正则表达式模式。例如，粘贴 Linear 问题 URL 并自动为会话标记项目名称和问题 ID。"
+  },
+
+  "shortcutsPage": {
+    "title": "快捷键",
+    "listNavigation": "列表导航",
+    "navigateItemsInList": "在列表中导航项目",
+    "goToFirstItem": "转到第一个项目",
+    "goToLastItem": "转到最后一个项目",
+    "sessionList": "会话列表",
+    "focusChatInput": "聚焦聊天输入",
+    "openContextMenu": "打开上下文菜单",
+    "chatInput": "聊天输入",
+    "sendMessage": "发送消息",
+    "newLine": "换行",
+    "closeDialogBlurInput": "关闭对话框/取消输入焦点"
+  },
+
+  "preferencesPage": {
+    "title": "首选项",
+    "basicInfo": "基本信息",
+    "basicInfoDesc": "帮助 iWeather 为您提供个性化回复。",
+    "prefName": "姓名",
+    "prefNameDesc": "iWeather 应该如何称呼您。",
+    "prefNamePlaceholder": "您的姓名",
+    "prefTimezone": "时区",
+    "prefTimezoneDesc": "用于相对日期，如「明天」或「下周」。",
+    "prefTimezonePlaceholder": "例如：Asia/Shanghai",
+    "prefLanguage": "语言",
+    "prefLanguageDesc": "iWeather 回复的首选语言。",
+    "prefLanguagePlaceholder": "例如：中文",
+    "location": "位置",
+    "locationDesc": "启用位置感知回复，如天气、本地时间和区域上下文。",
+    "prefCity": "城市",
+    "prefCityDesc": "您所在的城市，用于本地信息和上下文。",
+    "prefCityPlaceholder": "例如：北京",
+    "prefCountry": "国家",
+    "prefCountryDesc": "您所在的国家，用于区域格式和上下文。",
+    "prefCountryPlaceholder": "例如：中国",
+    "notes": "备注",
+    "notesDesc": "帮助 iWeather 了解您偏好的自由格式上下文。",
+    "notesPlaceholder": "您希望 iWeather 了解的任何其他上下文..."
+  }
 }

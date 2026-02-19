@@ -5,6 +5,7 @@
  */
 
 import * as React from 'react'
+import { useTranslation } from 'react-i18next'
 import { PanelHeader } from '@/components/app-shell/PanelHeader'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { SettingsSection, SettingsCard, SettingsRow } from '@/components/settings'
@@ -19,37 +20,38 @@ export const meta: DetailsPageMeta = {
 
 interface ShortcutItem {
   keys: string[]
-  description: string
+  descriptionKey: string
 }
 
 interface ShortcutSection {
-  title: string
+  titleKey: string
   shortcuts: ShortcutItem[]
 }
 
 // Component-specific shortcuts that aren't in the centralized registry
+// Keys are i18n keys, resolved in the component
 const componentSpecificSections: ShortcutSection[] = [
   {
-    title: 'List Navigation',
+    titleKey: 'shortcutsPage.listNavigation',
     shortcuts: [
-      { keys: ['↑', '↓'], description: 'Navigate items in list' },
-      { keys: ['Home'], description: 'Go to first item' },
-      { keys: ['End'], description: 'Go to last item' },
+      { keys: ['↑', '↓'], descriptionKey: 'shortcutsPage.navigateItemsInList' },
+      { keys: ['Home'], descriptionKey: 'shortcutsPage.goToFirstItem' },
+      { keys: ['End'], descriptionKey: 'shortcutsPage.goToLastItem' },
     ],
   },
   {
-    title: 'Session List',
+    titleKey: 'shortcutsPage.sessionList',
     shortcuts: [
-      { keys: ['Enter'], description: 'Focus chat input' },
-      { keys: ['Right-click'], description: 'Open context menu' },
+      { keys: ['Enter'], descriptionKey: 'shortcutsPage.focusChatInput' },
+      { keys: ['Right-click'], descriptionKey: 'shortcutsPage.openContextMenu' },
     ],
   },
   {
-    title: 'Chat Input',
+    titleKey: 'shortcutsPage.chatInput',
     shortcuts: [
-      { keys: ['Enter'], description: 'Send message' },
-      { keys: ['Shift', 'Enter'], description: 'New line' },
-      { keys: ['Esc'], description: 'Close dialog / blur input' },
+      { keys: ['Enter'], descriptionKey: 'shortcutsPage.sendMessage' },
+      { keys: ['Shift', 'Enter'], descriptionKey: 'shortcutsPage.newLine' },
+      { keys: ['Esc'], descriptionKey: 'shortcutsPage.closeDialogBlurInput' },
     ],
   },
 ]
@@ -89,9 +91,11 @@ function ActionShortcutRow({ actionId }: { actionId: ActionId }) {
 }
 
 export default function ShortcutsPage() {
+  const { t } = useTranslation('settings')
+
   return (
     <div className="h-full flex flex-col">
-      <PanelHeader title="Shortcuts" />
+      <PanelHeader title={t('shortcutsPage.title')} />
       <div className="flex-1 min-h-0 mask-fade-y">
         <ScrollArea className="h-full">
           <div className="px-5 py-7 max-w-3xl mx-auto space-y-8">
@@ -108,10 +112,10 @@ export default function ShortcutsPage() {
 
             {/* Component-specific sections */}
             {componentSpecificSections.map((section) => (
-              <SettingsSection key={section.title} title={section.title}>
+              <SettingsSection key={section.titleKey} title={t(section.titleKey)}>
                 <SettingsCard>
                   {section.shortcuts.map((shortcut, index) => (
-                    <SettingsRow key={index} label={shortcut.description}>
+                    <SettingsRow key={index} label={t(shortcut.descriptionKey)}>
                       <div className="flex items-center gap-1">
                         {shortcut.keys.map((key, keyIndex) => (
                           <Kbd key={keyIndex}>{key}</Kbd>

@@ -16,7 +16,7 @@
   "richToolDescriptions": "Rich tool descriptions",
   "richToolDescriptionsDesc": "Add action names and intent descriptions to all tool calls. Provides richer activity context in sessions.",
   "toolIcons": "Tool Icons",
-  "toolIconsDesc": "Icons shown next to CLI commands in chat activity. Stored in ~/.craft-agent/tool-icons/.",
+  "toolIconsDesc": "Icons shown next to CLI commands in chat activity. Stored in ~/.iweather/tool-icons/.",
   "searchTools": "Search tools...",
   "noToolIcons": "No tool icon mappings found",
   "tool": "Tool",
@@ -57,7 +57,6 @@
   "name": "Name",
   "untitled": "Untitled",
   "edit": "Edit",
-  "icon": "Icon",
   "change": "Change",
   "uploading": "Uploading...",
   "renameWorkspace": "Rename workspace",
@@ -82,6 +81,10 @@
   "credentialDecryptionFailed": "Credentials from another machine detected. Please re-authenticate on this device.",
   "noCredentials": "No credentials found for your default connection.",
   "credentialIssueGeneric": "Credential issue detected.",
+  "openInNewWindow": "Open in New Window",
+  "editFile": "Edit File",
+  "learnMore": "Learn more",
+
   "settingsMenu": {
     "app": "App",
     "appDesc": "Notifications and updates",
@@ -102,5 +105,112 @@
     "preferences": "Preferences",
     "preferencesDesc": "User preferences"
   },
-  "openInNewWindow": "Open in New Window"
+
+  "appPage": {
+    "title": "App",
+    "notifications": "Notifications",
+    "desktopNotifications": "Desktop notifications",
+    "desktopNotificationsDesc": "Get notified when AI finishes working in a chat.",
+    "power": "Power",
+    "keepScreenAwake": "Keep screen awake",
+    "keepScreenAwakeDesc": "Prevent the screen from turning off while sessions are running.",
+    "about": "About",
+    "version": "Version",
+    "loading": "Loading...",
+    "checkForUpdates": "Check for updates",
+    "checking": "Checking...",
+    "checkNow": "Check Now",
+    "updateReady": "Update ready",
+    "downloading": "Downloading",
+    "restartToUpdate": "Restart to Update to v{{version}}"
+  },
+
+  "inputPage": {
+    "title": "Input",
+    "typing": "Typing",
+    "typingDesc": "Control how text is entered in the chat input.",
+    "autoCapitalisation": "Auto capitalisation",
+    "autoCapitalisationDesc": "Automatically capitalise the first letter when typing a message.",
+    "spellCheck": "Spell check",
+    "spellCheckDesc": "Underline misspelled words while typing.",
+    "sending": "Sending",
+    "sendingDesc": "Choose how to send messages.",
+    "sendMessageWith": "Send message with",
+    "sendMessageWithDesc": "Keyboard shortcut for sending messages",
+    "enter": "Enter",
+    "enterDesc": "Use Shift+Enter for new lines",
+    "cmdEnter": "⌘ Enter",
+    "ctrlEnter": "Ctrl+Enter",
+    "cmdEnterDesc": "Use Enter for new lines"
+  },
+
+  "permissionsPage": {
+    "title": "Permissions",
+    "aboutPermissions": "About Permissions",
+    "aboutPermissionsDesc1": "Permissions control how much autonomy your agent has. In Explore mode, the agent can only read and research — perfect for understanding a problem before committing to changes. When you're ready, switch to Execute mode to let the agent implement the plan autonomously.",
+    "aboutPermissionsDesc2": "A good workflow: start in Explore to let the agent investigate, review the proposed plan, then execute with confidence.",
+    "defaultPermissions": "Default Permissions",
+    "defaultPermissionsDesc": "App-level patterns allowed in Explore mode. Commands not on this list are blocked.",
+    "noDefaultPermissions": "No default permissions found.",
+    "defaultPermissionsPath": "Default permissions should be at ~/.iweather/permissions/default.json",
+    "workspaceCustomizations": "Workspace Customizations",
+    "workspaceCustomizationsDesc": "Workspace-level patterns that extend the app defaults above.",
+    "noCustomPermissions": "No custom permissions configured.",
+    "customPermissionsPath": "Create a permissions.json file in your workspace to add custom rules."
+  },
+
+  "labelsPage": {
+    "title": "Labels",
+    "aboutLabels": "About Labels",
+    "aboutLabelsDesc1": "Labels help you organize sessions with colored tags. Use them to categorize conversations by project, topic, or priority — making it easy to filter and find related sessions later.",
+    "aboutLabelsDesc2": "Each label can optionally carry a value with a specific type (text, number, or date). This turns labels into structured metadata — for example, a \"priority\" label with value 3, or a \"due\" label with a date.",
+    "aboutLabelsDesc3": "Auto-apply rules assign labels automatically when a message matches a regex pattern. For example, pasting a Linear issue URL can auto-tag the session with the project name and issue ID — no manual tagging needed.",
+    "labelHierarchy": "Label Hierarchy",
+    "labelHierarchyDesc": "All labels configured for this workspace. Labels can be nested to form groups.",
+    "noLabelsConfigured": "No labels configured.",
+    "noLabelsHint": "Labels can be created by the agent or by editing labels/config.json in your workspace.",
+    "autoApplyRules": "Auto-Apply Rules",
+    "autoApplyRulesDesc": "Regex patterns that automatically apply labels when matched in user messages. For example, paste a Linear issue URL and automatically tag the session with the project name and issue ID."
+  },
+
+  "shortcutsPage": {
+    "title": "Shortcuts",
+    "listNavigation": "List Navigation",
+    "navigateItemsInList": "Navigate items in list",
+    "goToFirstItem": "Go to first item",
+    "goToLastItem": "Go to last item",
+    "sessionList": "Session List",
+    "focusChatInput": "Focus chat input",
+    "openContextMenu": "Open context menu",
+    "chatInput": "Chat Input",
+    "sendMessage": "Send message",
+    "newLine": "New line",
+    "closeDialogBlurInput": "Close dialog / blur input"
+  },
+
+  "preferencesPage": {
+    "title": "Preferences",
+    "basicInfo": "Basic Info",
+    "basicInfoDesc": "Help iWeather personalize responses to you.",
+    "prefName": "Name",
+    "prefNameDesc": "How iWeather should address you.",
+    "prefNamePlaceholder": "Your name",
+    "prefTimezone": "Timezone",
+    "prefTimezoneDesc": "Used for relative dates like 'tomorrow' or 'next week'.",
+    "prefTimezonePlaceholder": "e.g., America/New_York",
+    "prefLanguage": "Language",
+    "prefLanguageDesc": "Preferred language for iWeather's responses.",
+    "prefLanguagePlaceholder": "e.g., English",
+    "location": "Location",
+    "locationDesc": "Enables location-aware responses like weather, local time, and regional context.",
+    "prefCity": "City",
+    "prefCityDesc": "Your city for local information and context.",
+    "prefCityPlaceholder": "e.g., New York",
+    "prefCountry": "Country",
+    "prefCountryDesc": "Your country for regional formatting and context.",
+    "prefCountryPlaceholder": "e.g., USA",
+    "notes": "Notes",
+    "notesDesc": "Free-form context that helps iWeather understand your preferences.",
+    "notesPlaceholder": "Any additional context you'd like iWeather to know..."
+  }
 }
