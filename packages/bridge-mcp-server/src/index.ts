@@ -87,7 +87,7 @@ interface StoredCredential {
 function getCredentialCachePath(workspaceId: string, sourceSlug: string): string {
   return join(
     homedir(),
-    '.craft-agent',
+    '.iweather',
     'workspaces',
     workspaceId,
     'sources',
@@ -553,7 +553,7 @@ async function main() {
   // Create MCP server
   const server = new Server(
     {
-      name: 'craft-agent-api-bridge',
+      name: 'iweather-api-bridge',
       version: '0.3.1',
     },
     {

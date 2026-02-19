@@ -1,121 +1,120 @@
-# Contributing to Craft Agents
+# 贡献指南
 
-Thank you for your interest in contributing to Craft Agents! This document provides guidelines and instructions for contributing.
+感谢你对 iWeather 项目的贡献兴趣！本文档提供了贡献的指南和说明。
 
-## Getting Started
+## 快速开始
 
-### Prerequisites
+### 前置要求
 
-- [Bun](https://bun.sh/) runtime
-- Node.js 18+ (for some tooling)
-- macOS, Linux, or Windows
+- [Bun](https://bun.sh/) 运行时
+- Node.js 18+（用于某些工具）
+- macOS、Linux 或 Windows
 
-### Development Setup
+### 开发环境设置
 
-1. Clone the repository:
+1. 克隆仓库：
    ```bash
-   git clone https://github.com/lukilabs/craft-agents-oss.git
-   cd craft-agents-oss
+   git clone https://github.com/reason7871/iweather-cowork.git
+   cd iweather-cowork
    ```
 
-2. Install dependencies:
+2. 安装依赖：
    ```bash
    bun install
    ```
 
-3. Set up environment variables:
+3. 设置环境变量：
    ```bash
    cp .env.example .env
-   # Edit .env with your credentials
+   # 编辑 .env 文件，填入你的凭据
    ```
 
-4. Run in development mode:
+4. 以开发模式运行：
    ```bash
    bun run electron:dev
    ```
 
-## Development Workflow
+## 开发工作流
 
-### Branch Naming
+### 分支命名
 
-Use descriptive branch names:
-- `feature/add-new-tool` - New features
-- `fix/resolve-auth-issue` - Bug fixes
-- `refactor/simplify-agent-loop` - Code refactoring
-- `docs/update-readme` - Documentation updates
+使用描述性的分支名称：
+- `feature/add-new-tool` - 新功能
+- `fix/resolve-auth-issue` - Bug 修复
+- `refactor/simplify-agent-loop` - 代码重构
+- `docs/update-readme` - 文档更新
 
-### Making Changes
+### 进行更改
 
-1. Create a feature branch from `main`
-2. Make your changes
-3. Run type checking: `bun run typecheck:all`
-4. Commit your changes with clear, descriptive messages
-5. Push to your fork and create a pull request
+1. 从 `main` 创建功能分支
+2. 进行更改
+3. 运行类型检查：`bun run typecheck:all`
+4. 使用清晰、描述性的消息提交更改
+5. 推送到你的 fork 并创建 Pull Request
 
-### Code Style
+### 代码风格
 
-- We use TypeScript throughout the codebase
-- Follow existing patterns in the codebase
-- Use meaningful variable and function names
-- Add comments for complex logic
+- 我们在整个代码库中使用 TypeScript
+- 遵循代码库中的现有模式
+- 使用有意义的变量和函数名称
+- 为复杂逻辑添加注释
 
-### Type Checking
+### 类型检查
 
-Before submitting a PR, ensure all type checks pass:
+在提交 PR 之前，确保所有类型检查通过：
 
 ```bash
 bun run typecheck:all
 ```
 
-## Pull Request Process
+## Pull Request 流程
 
-1. **Title**: Use a clear, descriptive title
-2. **Description**: Explain what the PR does and why
-3. **Testing**: Describe how you tested the changes
-4. **Screenshots**: Include screenshots for UI changes
+1. **标题**：使用清晰、描述性的标题
+2. **描述**：解释 PR 做了什么以及为什么
+3. **测试**：描述你如何测试更改
+4. **截图**：UI 更改请包含截图
 
-### PR Template
+### PR 模板
 
 ```markdown
-## Summary
-Brief description of changes
+## 摘要
+简要描述更改内容
 
-## Changes
-- Change 1
-- Change 2
+## 更改
+- 更改 1
+- 更改 2
 
-## Testing
-How you tested these changes
+## 测试
+如何测试这些更改
 
-## Screenshots (if applicable)
+## 截图（如适用）
 ```
 
-## Project Structure
+## 项目结构
 
 ```
-craft-agents/
+iweather-agent/
 ├── apps/
-│   ├── electron/    # Desktop GUI (primary interface)
-│   └── tui/         # Terminal CLI (deprecated)
+│   └── electron/    # 桌面 GUI（主要界面）
 └── packages/
-    ├── core/        # @craft-agent/core - Shared types
-    ├── shared/      # @craft-agent/shared - Business logic
-    └── ui/          # @craft-agent/ui - React components
+    ├── core/        # @iweather/core - 共享类型
+    ├── shared/      # @iweather/shared - 业务逻辑
+    └── ui/          # @iweather/ui - React 组件
 ```
 
-## Key Areas
+## 关键目录
 
-- **Agent Logic**: `packages/shared/src/agent/`
-- **Authentication**: `packages/shared/src/auth/`
-- **MCP Integration**: `packages/shared/src/mcp/`
-- **UI Components**: `packages/ui/src/`
-- **Electron App**: `apps/electron/`
+- **代理逻辑**：`packages/shared/src/agent/`
+- **认证**：`packages/shared/src/auth/`
+- **MCP 集成**：`packages/shared/src/mcp/`
+- **UI 组件**：packages/ui/src/`
+- **Electron 应用**：`apps/electron/`
 
-## Questions?
+## 有问题？
 
-- Open an issue for bugs or feature requests
-- Start a discussion for questions or ideas
+- 对于 bug 或功能请求，请提交 issue
+- 对于问题或想法，请发起讨论
 
-## License
+## 许可证
 
-By contributing, you agree that your contributions will be licensed under the Apache License 2.0.
+通过贡献，你同意你的贡献将根据 Apache License 2.0 许可。

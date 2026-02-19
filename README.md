@@ -1,244 +1,155 @@
-# Craft Agents
+# iWeather
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 
-## How it Works (Video)
-To understand what Craft Agents does and how it works watch this video.
+## 简介
 
-[![Demo Video](https://img.youtube.com/vi/xQouiAIilvU/hqdefault.jpg)](https://www.youtube.com/watch?v=xQouiAIilvU)
+iWeather 是一款基于 Claude Agent SDK 构建的智能 AI 助手桌面应用。它提供直观的多任务处理能力，可以无缝连接任何 API 或服务，支持会话共享，并以文档为中心的工作流程，在精美流畅的界面中呈现。
 
-[Click Here (or on the image above) to watch the video on YouTube →](https://www.youtube.com/watch?v=xQouiAIilvU)
+该项目采用 Agent Native 软件原则设计，开箱即用，高度可定制。
 
+## 功能特色
 
-## Why Craft Agents was built
-Craft Agents is a tool we built so that we (at craft.do) can work effectively with agents. It enables intuitive multitasking, no-fluff connection to any API or Service, sharing sessions, and a more document (vs code) centric workflow - in a beautiful and fluid UI.
+### 核心功能
 
-It uses the Claude Agent SDK and the Codex app-server side by side—building on what we found great and improving areas where we’ve desired improvements.
+- **多会话收件箱**：桌面应用支持会话管理、状态工作流和标记功能
+- **Claude Code 体验**：流式响应、工具可视化、实时更新
+- **多 LLM 连接**：支持添加多个 AI 提供商，并可为每个工作区设置默认连接
+- **Codex / OpenAI 支持**：可与 Anthropic 一起运行 Codex 支持的会话
+- **MCP 集成**：支持连接 MCP 服务器
+- **数据源**：连接 MCP 服务器、REST API（Google、Slack、Microsoft）和本地文件系统
+- **权限模式**：三级系统（探索、编辑确认、自动），支持自定义规则
+- **后台任务**：运行长时间操作并跟踪进度
+- **动态状态系统**：可自定义的会话工作流状态（待办、进行中、已完成等）
+- **主题系统**：应用级和工作区级级联主题
+- **多文件差异对比**：VS Code 风格的窗口，查看一轮对话中的所有文件更改
+- **技能**：按工作区存储的专业代理指令
+- **文件附件**：拖放图片、PDF、Office 文档，自动转换
+- **钩子**：事件驱动自动化 —— 在标签更改、计划任务、工具使用等事件触发时运行命令或创建会话
 
-It's built with Agent Native software principles in mind, and is highly customisable out of the box. One of the first of its kind.
+### 数据源连接
 
-Craft Agents is open source under the Apache 2.0 license - so you are free to remix, change anything. And that's actually possible. We ourselves are building Craft Agents with Craft Agents only - no code editors - so really, any customisation is just a prompt away.
+| 类型 | 示例 |
+|------|------|
+| **MCP 服务器** | 自定义服务器、Linear、GitHub、Notion |
+| **REST API** | Google（Gmail、日历、Drive）、Slack、Microsoft |
+| **本地文件** | 文件系统、Obsidian 库、Git 仓库 |
 
-We built Craft Agents because we wanted a better, more opinionated (and preferably non-CLI way) of working with the most powerful agents in the world. We'll continue to improve it, based on our experiences and intuition.
+### 权限模式
 
-<img width="1578" height="894" alt="image" src="https://github.com/user-attachments/assets/3f1f2fe8-7cf6-4487-99ff-76f6c8c0a3fb" />
+| 模式 | 显示名称 | 行为 |
+|------|---------|------|
+| `safe` | 探索 | 只读，阻止所有写入操作 |
+| `ask` | 编辑确认 | 需要批准（默认） |
+| `allow-all` | 自动 | 自动批准所有命令 |
 
-## Things that are hard to believe "just work"
+使用 **SHIFT+TAB** 在聊天界面中切换模式。
 
-**How do I connect to Linear, Gmail, Slack...?**
-Tell the agent "add Linear as a source." It finds public APIs and MCP servers, reads their docs, sets up credentials, and configures everything. No config files, no setup wizards.
+## 安装
 
-[Check out how I just connected to Slack →](https://agents.craft.do/s/DRNQEiy8w2e1v5LPgKl8b)
-
-**I already have my MCP config JSON.**
-Paste it. The agent handles the rest.
-
-**What about local MCPs?**
-Fully supported. Stdio-based MCP servers run as local subprocesses on your machine. Point it at an npx command, a Python script, or any local binary. It just works.
-
-**Can it handle custom APIs?**
-Yes. Paste an OpenAPI spec, some endpoint URLs, screenshots of docs, whatever you have. It figures it out and guides you through the rest.
-
-**APIs too? Not just MCPs?**
-Craft Agents connects to anything. We have it hooked up to a direct Postgres DB behind a jumpbox. Skills + Sources = magic.
-
-**How do I import my Claude Code skills and MCPs?**
-Tell the agent you want to import your skills from Claude Code. It handles the migration.
-
-[Here I imported all my skills in one go →](https://agents.craft.do/s/gWCFqwhObFWaNJIEJmd6j)
-
-**How do I create a new skill?**
-Describe what the skill should do, give it context. The agent takes care of the rest.
-
-**Do I need to restart after changes?**
-No. Everything is instant. Mention new skills or sources with `@`, even mid-conversation.
-
-**So I can just ask it anything?**
-Yes. That's the core idea behind agent-native software. You describe what you want, and it figures out how. That's a good use of tokens.
-
-
-## Installation
-
-### One-Line Install (Recommended)
-
-**macOS / Linux:**
-```bash
-curl -fsSL https://agents.craft.do/install-app.sh | bash
-```
-
-**Windows (PowerShell):**
-```powershell
-irm https://agents.craft.do/install-app.ps1 | iex
-```
-
-### Build from Source
+### 从源码构建
 
 ```bash
-git clone https://github.com/lukilabs/craft-agents-oss.git
-cd craft-agents-oss
+git clone https://github.com/reason7871/iweather-cowork.git
+cd iweather-cowork
 bun install
 bun run electron:start
 ```
 
-## Features
+## 快速开始
 
-- **Multi-Session Inbox**: Desktop app with session management, status workflow, and flagging
-- **Claude Code Experience**: Streaming responses, tool visualization, real-time updates
-- **Multiple LLM Connections**: Add multiple AI providers and set per-workspace defaults
-- **Codex / OpenAI Support**: Run Codex-backed sessions alongside Anthropic
-- **Craft MCP Integration**: Access to 32+ Craft document tools (blocks, collections, search, tasks)
-- **Sources**: Connect to MCP servers, REST APIs (Google, Slack, Microsoft), and local filesystems
-- **Permission Modes**: Three-level system (Explore, Ask to Edit, Auto) with customizable rules
-- **Background Tasks**: Run long-running operations with progress tracking
-- **Dynamic Status System**: Customizable session workflow states (Todo, In Progress, Done, etc.)
-- **Theme System**: Cascading themes at app and workspace levels
-- **Multi-File Diff**: VS Code-style window for viewing all file changes in a turn
-- **Skills**: Specialized agent instructions stored per-workspace
-- **File Attachments**: Drag-drop images, PDFs, Office documents with auto-conversion
-- **Hooks**: Event-driven automation — run commands or create sessions on label changes, schedules, tool use, and more
+1. **启动应用**：安装后启动 iWeather
+2. **选择 API 连接**：使用 Anthropic（API 密钥或 Claude Max）或 Codex（OpenAI OAuth）
+3. **创建工作区**：设置工作区来组织你的会话
+4. **连接数据源**（可选）：添加 MCP 服务器、REST API 或本地文件系统
+5. **开始对话**：创建会话并与 Claude 交互
 
-## Quick Start
-
-1. **Launch the app** after installation
-2. **Choose API Connection**: Use Anthropic (API key or Claude Max) or Codex (OpenAI OAuth)
-3. **Create a workspace**: Set up a workspace to organize your sessions
-4. **Connect sources** (optional): Add MCP servers, REST APIs, or local filesystems
-5. **Start chatting**: Create sessions and interact with Claude
-
-## Desktop App Features
-
-### Session Management
-
-- **Inbox/Archive**: Sessions organized by workflow status
-- **Flagging**: Mark important sessions for quick access
-- **Status Workflow**: Todo → In Progress → Needs Review → Done
-- **Session Naming**: AI-generated titles or manual naming
-- **Session Persistence**: Full conversation history saved to disk
-
-### Sources
-
-Connect external data sources to your workspace:
-
-| Type | Examples |
-|------|----------|
-| **MCP Servers** | Craft, Linear, GitHub, Notion, custom servers |
-| **REST APIs** | Google (Gmail, Calendar, Drive), Slack, Microsoft |
-| **Local Files** | Filesystem, Obsidian vaults, Git repos |
-
-### Permission Modes
-
-| Mode | Display | Behavior |
-|------|---------|----------|
-| `safe` | Explore | Read-only, blocks all write operations |
-| `ask` | Ask to Edit | Prompts for approval (default) |
-| `allow-all` | Auto | Auto-approves all commands |
-
-Use **SHIFT+TAB** to cycle through modes in the chat interface.
-
-### Keyboard Shortcuts
-
-| Shortcut | Action |
-|----------|--------|
-| `Cmd+N` | New chat |
-| `Cmd+1/2/3` | Focus sidebar/list/chat |
-| `Cmd+/` | Keyboard shortcuts dialog |
-| `SHIFT+TAB` | Cycle permission modes |
-| `Enter` | Send message |
-| `Shift+Enter` | New line |
-
-## Architecture
+## 架构
 
 ```
-craft-agent/
+iweather-agent/
 ├── apps/
-│   └── electron/              # Desktop GUI (primary)
+│   └── electron/              # 桌面 GUI（主要界面）
 │       └── src/
-│           ├── main/          # Electron main process
-│           ├── preload/       # Context bridge
+│           ├── main/          # Electron 主进程
+│           ├── preload/       # 上下文桥接
 │           └── renderer/      # React UI (Vite + shadcn)
 └── packages/
-    ├── core/                  # Shared types
-    └── shared/                # Business logic
+    ├── core/                  # 共享类型
+    └── shared/                # 业务逻辑
         └── src/
-            ├── agent/         # CraftAgent, permissions
-            ├── auth/          # OAuth, tokens
-            ├── config/        # Storage, preferences, themes
-            ├── credentials/   # AES-256-GCM encrypted storage
-            ├── sessions/      # Session persistence
-            ├── sources/       # MCP, API, local sources
-            └── statuses/      # Dynamic status system
+            ├── agent/         # Agent、权限
+            ├── auth/          # OAuth、令牌
+            ├── config/        # 存储、偏好、主题
+            ├── credentials/   # AES-256-GCM 加密存储
+            ├── sessions/      # 会话持久化
+            ├── sources/       # MCP、API、本地数据源
+            └── statuses/      # 动态状态系统
 ```
 
-## Development
+## 开发
 
 ```bash
-# Hot reload development
+# 热重载开发模式
 bun run electron:dev
 
-# Build and run
+# 构建并运行
 bun run electron:start
 
-# Type checking
+# 类型检查
 bun run typecheck:all
 
-# Debug logging (writes to ~/Library/Logs/Craft Agents/)
-# Logs are automatically enabled in development
+# 调试日志（写入到 ~/Library/Logs/iWeather/）
+# 日志在开发模式下自动启用
 ```
 
-### Environment Variables
+### 环境变量
 
-OAuth integrations (Slack, Microsoft) require credentials baked into the build. Create a `.env` file:
+OAuth 集成（Slack、Microsoft）需要在构建时嵌入凭据。创建 `.env` 文件：
 
 ```bash
 MICROSOFT_OAUTH_CLIENT_ID=your-client-id
 SLACK_OAUTH_CLIENT_ID=your-slack-client-id
-SLACK_OAUTH_CLIENT_SECRET=your-slack-client-secret
+SLACK_OAUTH_CLIENT_SECRET=your-slack-secret
 ```
 
-**Note:** Google OAuth credentials are NOT baked into the build. Users provide their own credentials via source configuration. See the [Google OAuth Setup](#google-oauth-setup-gmail-calendar-drive) section below.
+**注意：** Google OAuth 凭据不会嵌入到构建中。用户通过数据源配置提供自己的凭据。
 
-### Google OAuth Setup (Gmail, Calendar, Drive)
+### Google OAuth 设置（Gmail、日历、Drive）
 
-Google integrations require you to create your own OAuth credentials. This is a one-time setup.
+Google 集成需要创建自己的 OAuth 凭据。这是一次性设置。
 
-#### 1. Create a Google Cloud Project
+#### 1. 创建 Google Cloud 项目
 
-1. Go to [Google Cloud Console](https://console.cloud.google.com)
-2. Create a new project (or select an existing one)
-3. Note your Project ID
+1. 访问 [Google Cloud Console](https://console.cloud.google.com)
+2. 创建新项目（或选择现有项目）
+3. 记下项目 ID
 
-#### 2. Enable Required APIs
+#### 2. 启用所需 API
 
-Go to **APIs & Services → Library** and enable the APIs you need:
-- **Gmail API** - for email integration
-- **Google Calendar API** - for calendar integration
-- **Google Drive API** - for file storage integration
+访问 **APIs & Services → Library** 并启用所需 API：
+- **Gmail API** - 邮件集成
+- **Google Calendar API** - 日历集成
+- **Google Drive API** - 文件存储集成
 
-#### 3. Configure OAuth Consent Screen
+#### 3. 配置 OAuth 同意屏幕
 
-1. Go to **APIs & Services → OAuth consent screen**
-2. Select **External** user type (unless you have Google Workspace)
-3. Fill in required fields:
-   - App name: e.g., "My Craft Agent"
-   - User support email: your email
-   - Developer contact: your email
-4. Add scopes (optional - can leave default)
-5. Add yourself as a test user (required for External apps in testing mode)
-6. Complete the wizard
+1. 访问 **APIs & Services → OAuth consent screen**
+2. 选择 **External** 用户类型（除非你有 Google Workspace）
+3. 填写必填字段
+4. 将自己添加为测试用户
 
-#### 4. Create OAuth Credentials
+#### 4. 创建 OAuth 凭据
 
-1. Go to **APIs & Services → Credentials**
-2. Click **Create Credentials → OAuth Client ID**
-3. Application type: **Desktop app**
-4. Name: e.g., "Craft Agent Desktop"
-5. Click **Create**
-6. Note the **Client ID** and **Client Secret**
+1. 访问 **APIs & Services → Credentials**
+2. 点击 **Create Credentials → OAuth Client ID**
+3. 应用类型：**Desktop app**
+4. 创建后记下 **Client ID** 和 **Client Secret**
 
-#### 5. Configure in Craft Agent
+#### 5. 在 iWeather 中配置
 
-When setting up a Google source (Gmail, Calendar, Drive), add these fields to your source's `config.json`:
+设置 Google 数据源时，在配置中添加这些字段：
 
 ```json
 {
@@ -250,188 +161,132 @@ When setting up a Google source (Gmail, Calendar, Drive), add these fields to yo
 }
 ```
 
-Or simply tell the agent you want to connect Gmail/Calendar/Drive - it will guide you through entering your credentials.
+## 配置第三方提供商（OpenRouter、Vercel AI Gateway、Ollama 等）
 
-#### Security Notes
+第三方和自托管 LLM 提供商**仅通过 Claude / Anthropic API 密钥**连接支持。
 
-- Your OAuth credentials are stored encrypted alongside other source credentials
-- Never commit credentials to version control
-- For production use, consider getting your OAuth consent screen verified by Google
+| 提供商 | 端点 | 说明 |
+|--------|------|------|
+| **OpenRouter** | `https://openrouter.ai/api` | 通过单一 API 密钥访问 Claude、GPT、Llama、Gemini 等数百种模型 |
+| **Vercel AI Gateway** | `https://ai-gateway.vercel.sh` | 通过 Vercel AI Gateway 路由请求，内置可观测性和缓存 |
+| **Ollama** | `http://localhost:11434` | 本地运行开源模型，无需 API 密钥 |
+| **自定义** | 任何 URL | 任何 OpenAI 兼容或 Anthropic 兼容端点 |
 
-## Configure Third-Party Providers (OpenRouter, Vercel AI Gateway, Ollama, etc.)
+## 配置
 
-Third-party and self-hosted LLM providers are supported **only through the Claude / Anthropic API Key** connection. When you select **Anthropic API Key** during setup, you can choose from:
-
-| Provider | Endpoint | Notes |
-|----------|----------|-------|
-| **OpenRouter** | `https://openrouter.ai/api` | Access Claude, GPT, Llama, Gemini, and hundreds of other models through a single API key. Use `provider/model-name` format (e.g. `anthropic/claude-opus-4.6`). |
-| **Vercel AI Gateway** | `https://ai-gateway.vercel.sh` | Route requests through Vercel's AI Gateway with built-in observability and caching. |
-| **Ollama** | `http://localhost:11434` | Run open-source models locally. No API key required. |
-| **Custom** | Any URL | Any OpenAI-compatible or Anthropic-compatible endpoint. |
-
-### Why only under Claude?
-
-Craft Agents uses two different agent backends:
-
-- **Claude** — powered by the [Claude Agent SDK](https://www.npmjs.com/package/@anthropic-ai/claude-agent-sdk), which natively supports custom base URLs and provider routing. This makes it straightforward to point requests at any compatible endpoint.
-- **Codex** — powered by the [Codex app-server](https://github.com/lukilabs/craft-agents-codex), which communicates via JSON-RPC over stdio. Codex connections are limited to **direct OpenAI API** (via API key or ChatGPT subscription OAuth).
-
-If you want to use models from OpenRouter, Vercel AI Gateway, Ollama, or any other third-party provider, set up a **Claude / Anthropic API Key** connection and select the desired endpoint.
-
-## Configuration
-
-Configuration is stored at `~/.craft-agent/`:
+配置存储在 `~/.iweather/`：
 
 ```
-~/.craft-agent/
-├── config.json              # Main config (workspaces, LLM connections)
-├── credentials.enc          # Encrypted credentials (AES-256-GCM)
-├── preferences.json         # User preferences
-├── theme.json               # App-level theme
+~/.iweather/
+├── config.json              # 主配置（工作区、LLM 连接）
+├── credentials.enc          # 加密凭据（AES-256-GCM）
+├── preferences.json         # 用户偏好
+├── theme.json               # 应用级主题
 └── workspaces/
     └── {id}/
-        ├── config.json      # Workspace settings
-        ├── theme.json       # Workspace theme override
-        ├── hooks.json       # Event-driven automation hooks
-        ├── sessions/        # Session data (JSONL)
-        ├── sources/         # Connected sources
-        ├── skills/          # Custom skills
-        └── statuses/        # Status configuration
+        ├── config.json      # 工作区设置
+        ├── theme.json       # 工作区主题覆盖
+        ├── hooks.json       # 事件驱动自动化钩子
+        ├── sessions/        # 会话数据 (JSONL)
+        ├── sources/         # 已连接的数据源
+        ├── skills/          # 自定义技能
+        └── statuses/        # 状态配置
 ```
 
-### Hooks (Automation)
+### 钩子（自动化）
 
-Hooks let you automate workflows by triggering actions when events happen — labels change, sessions start, tools run, or on a cron schedule.
+钩子允许你在事件发生时自动触发操作 —— 标签更改、会话开始、工具运行或按计划执行。
 
-**Just ask the agent:**
-- "Set up a daily standup briefing every weekday at 9am"
-- "Notify me when a session is labelled urgent"
-- "Log all permission mode changes to a file"
-- "Every Friday at 5pm, summarise this week's completed tasks"
+**直接告诉代理：**
+- "设置每个工作日上午 9 点的每日站会简报"
+- "当会话被标记为紧急时通知我"
+- "将所有权限模式更改记录到文件"
+- "每周五下午 5 点，总结本周完成的任务"
 
-Or configure manually in `~/.craft-agent/workspaces/{id}/hooks.json`:
+**钩子类型：**
+- **命令钩子** —— 运行 shell 命令，事件数据作为环境变量（`$CRAFT_LABEL`、`$CRAFT_SESSION_ID` 等）
+- **提示钩子** —— 使用提示创建新的代理会话（支持 `@mentions` 引用数据源和技能）
 
-```json
-{
-  "version": 1,
-  "hooks": {
-    "SchedulerTick": [
-      {
-        "cron": "0 9 * * 1-5",
-        "timezone": "America/New_York",
-        "labels": ["Scheduled"],
-        "hooks": [
-          { "type": "prompt", "prompt": "Check @github for new issues assigned to me" }
-        ]
-      }
-    ],
-    "LabelAdd": [
-      {
-        "matcher": "^urgent$",
-        "permissionMode": "allow-all",
-        "hooks": [
-          { "type": "command", "command": "osascript -e 'display notification \"Urgent session\" with title \"Craft Agent\"'" }
-        ]
-      }
-    ]
-  }
-}
-```
+**支持的事件：** `LabelAdd`、`LabelRemove`、`PermissionModeChange`、`FlagChange`、`SessionStatusChange`、`SchedulerTick`、`PreToolUse`、`PostToolUse`、`SessionStart`、`SessionEnd` 等。
 
-**Two hook types:**
-- **Command hooks** — run shell commands with event data as environment variables (`$CRAFT_LABEL`, `$CRAFT_SESSION_ID`, etc.)
-- **Prompt hooks** — create a new agent session with a prompt (supports `@mentions` for sources and skills)
+## 高级功能
 
-**Supported events:** `LabelAdd`, `LabelRemove`, `PermissionModeChange`, `FlagChange`, `SessionStatusChange`, `SchedulerTick`, `PreToolUse`, `PostToolUse`, `SessionStart`, `SessionEnd`, and more.
+### 大响应处理
 
-See the [Hooks documentation](https://agents.craft.do/docs/hooks/overview) for the full reference.
+超过约 60KB 的工具响应会使用 Claude Haiku 自动摘要，保留意图感知上下文。
 
-## Advanced Features
+### 深度链接
 
-### Large Response Handling
-
-Tool responses exceeding ~60KB are automatically summarized using Claude Haiku with intent-aware context. The `_intent` field is injected into MCP tool schemas to preserve summarization focus.
-
-### Deep Linking
-
-External apps can navigate using `craftagents://` URLs:
+外部应用可以使用 `iweather://` URL 进行导航：
 
 ```
-craftagents://allSessions                      # All sessions view
-craftagents://allSessions/session/session123   # Specific session
-craftagents://settings                         # Settings
-craftagents://sources/source/github            # Source info
-craftagents://action/new-chat                  # Create new session
+iweather://allSessions                      # 所有会话视图
+iweather://allSessions/session/session123   # 特定会话
+iweather://settings                         # 设置
+iweather://sources/source/github            # 数据源信息
+iweather://action/new-chat                  # 创建新会话
 ```
 
-## Tech Stack
+## 技术栈
 
-| Layer | Technology |
-|-------|------------|
-| Runtime | [Bun](https://bun.sh/) |
+| 层级 | 技术 |
+|------|------|
+| 运行时 | [Bun](https://bun.sh/) |
 | AI | [@anthropic-ai/claude-agent-sdk](https://www.npmjs.com/package/@anthropic-ai/claude-agent-sdk) |
-| AI (OpenAI) | Craft Agents Codex fork (app-server) |
-| Desktop | [Electron](https://www.electronjs.org/) + React |
+| AI (OpenAI) | Codex app-server |
+| 桌面应用 | [Electron](https://www.electronjs.org/) + React |
 | UI | [shadcn/ui](https://ui.shadcn.com/) + Tailwind CSS v4 |
-| Build | esbuild (main) + Vite (renderer) |
-| Credentials | AES-256-GCM encrypted file storage |
+| 构建 | esbuild (主进程) + Vite (渲染进程) |
+| 凭据 | AES-256-GCM 加密文件存储 |
 
-## Troubleshooting
+## 故障排除
 
-### Debug Mode
+### 调试模式
 
-To launch the packaged app with verbose logging enabled, use `-- --debug` (note the double dash separator):
+要启用详细日志启动打包应用，使用 `-- --debug`（注意双破折号分隔符）：
 
 **macOS:**
 ```bash
-/Applications/Craft\ Agents.app/Contents/MacOS/Craft\ Agents -- --debug
+/Applications/iWeather.app/Contents/MacOS/iWeather -- --debug
 ```
 
 **Windows (PowerShell):**
 ```powershell
-& "$env:LOCALAPPDATA\Programs\@craft-agentelectron\Craft Agents.exe" -- --debug
+& "$env:LOCALAPPDATA\Programs\iWeather\iWeather.exe" -- --debug
 ```
 
 **Linux:**
 ```bash
-./craft-agents -- --debug
+./iweather -- --debug
 ```
 
-Logs are written to:
-- **macOS:** `~/Library/Logs/@craft-agent/electron/main.log`
-- **Windows:** `%APPDATA%\@craft-agent\electron\logs\main.log`
-- **Linux:** `~/.config/@craft-agent/electron/logs/main.log`
+日志写入位置：
+- **macOS:** `~/Library/Logs/@iweather/electron/main.log`
+- **Windows:** `%APPDATA%\@iweather\electron\logs\main.log`
+- **Linux:** `~/.config/@iweather/electron/logs/main.log`
 
-## License
+## 许可证
 
-This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+本项目采用 Apache License 2.0 许可 - 详情见 [LICENSE](LICENSE) 文件。
 
-### Third-Party Licenses
+### 第三方许可证
 
-This project uses the [Claude Agent SDK](https://www.npmjs.com/package/@anthropic-ai/claude-agent-sdk), which is subject to [Anthropic's Commercial Terms of Service](https://www.anthropic.com/legal/commercial-terms).
+本项目使用 [Claude Agent SDK](https://www.npmjs.com/package/@anthropic-ai/claude-agent-sdk)，受 [Anthropic 商业服务条款](https://www.anthropic.com/legal/commercial-terms)约束。
 
-Craft Agents also bundles a custom Codex app-server fork to support OpenAI/Codex connections:
+## 贡献
 
-- https://github.com/lukilabs/craft-agents-codex
+欢迎贡献！请参阅 [CONTRIBUTING.md](CONTRIBUTING.md) 了解指南。
 
-### Trademark
+## 安全
 
-"Craft" and "Craft Agents" are trademarks of Craft Docs Ltd. See [TRADEMARK.md](TRADEMARK.md) for usage guidelines.
+### 本地 MCP 服务器隔离
 
-## Contributing
+在生成本地 MCP 服务器（stdio 传输）时，敏感环境变量会被过滤，以防止凭据泄露到子进程。被阻止的变量包括：
 
-We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+- `ANTHROPIC_API_KEY`、`CLAUDE_CODE_OAUTH_TOKEN`（应用认证）
+- `AWS_ACCESS_KEY_ID`、`AWS_SECRET_ACCESS_KEY`、`AWS_SESSION_TOKEN`
+- `GITHUB_TOKEN`、`GH_TOKEN`、`OPENAI_API_KEY`、`GOOGLE_API_KEY`、`STRIPE_SECRET_KEY`、`NPM_TOKEN`
 
-## Security
+要显式将环境变量传递给特定 MCP 服务器，请在数据源配置中使用 `env` 字段。
 
-### Local MCP Server Isolation
-
-When spawning local MCP servers (stdio transport), sensitive environment variables are filtered out to prevent credential leakage to subprocesses. Blocked variables include:
-
-- `ANTHROPIC_API_KEY`, `CLAUDE_CODE_OAUTH_TOKEN` (app auth)
-- `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`
-- `GITHUB_TOKEN`, `GH_TOKEN`, `OPENAI_API_KEY`, `GOOGLE_API_KEY`, `STRIPE_SECRET_KEY`, `NPM_TOKEN`
-
-To explicitly pass an env var to a specific MCP server, use the `env` field in the source config.
-
-To report security vulnerabilities, please see [SECURITY.md](SECURITY.md).
+报告安全漏洞请参阅 [SECURITY.md](SECURITY.md)。

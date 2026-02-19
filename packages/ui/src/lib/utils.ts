@@ -1,5 +1,5 @@
 /**
- * Utility functions for @craft-agent/ui
+ * Utility functions for @iweather/ui
  */
 
 import { type ClassValue, clsx } from 'clsx'

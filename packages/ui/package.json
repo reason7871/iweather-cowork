@@ -1,5 +1,5 @@
 {
-  "name": "@craft-agent/ui",
+  "name": "@iweather/ui",
   "version": "0.4.8",
   "license": "Apache-2.0",
   "description": "Shared React UI components for Craft Agents - session viewer, chat display, markdown rendering",
@@ -17,8 +17,8 @@
     "./styles": "./src/styles/index.css"
   },
   "dependencies": {
-    "@craft-agent/core": "workspace:*",
-    "@craft-agent/mermaid": "workspace:*",
+    "@iweather/core": "workspace:*",
+    "@iweather/mermaid": "workspace:*",
     "@types/mdast": "^4.0.0",
     "@uiw/react-json-view": "^2.0.0-alpha.40",
     "fflate": "^0.8.2",

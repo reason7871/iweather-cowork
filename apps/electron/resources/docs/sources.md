@@ -8,10 +8,10 @@ When a user wants to add a new source, follow this conversational setup process 
 
 ### 0. Search for Specialized Source Guide (REQUIRED FIRST STEP)
 
-**Before doing anything else**, search for a specialized guide using the craft-agents-docs MCP:
+**Before doing anything else**, search for a specialized guide using the iweather-docs MCP:
 
 ```
-mcp__craft-agents-docs__SearchCraftAgents({ query: "{service} source setup" })
+mcp__iweather-docs__SearchIWeather({ query: "{service} source setup" })
 ```
 
 **Available guides:** GitHub, Linear, Slack, Gmail, Google Calendar, Google Drive, Google Docs, Google Sheets, Outlook, Microsoft Calendar, Teams, SharePoint, Craft, Filesystem, Brave Search, Memory
@@ -179,7 +179,7 @@ Concrete examples tailored to the user's workflow:
 User: I want to add Linear
 
 Agent: [FIRST: Searches for Linear guide]
-       mcp__craft-agents-docs__SearchCraftAgents({ query: "linear source setup" })
+       mcp__iweather-docs__SearchIWeather({ query: "linear source setup" })
 
 Agent: I found the Linear setup guide! A few questions:
 1. What will you primarily use Linear for? (issue tracking, sprint planning, reporting?)
@@ -212,7 +212,7 @@ Would you like me to show you what issues are currently open?
 ## Overview
 
 Sources are stored as folders under:
-- `~/.craft-agent/workspaces/{workspaceId}/sources/{sourceSlug}/`
+- `~/.iweather/workspaces/{workspaceId}/sources/{sourceSlug}/`
 
 Each source folder contains:
 - `config.json` - Source configuration (required)
@@ -651,7 +651,7 @@ The `config.icon` field controls the source icon. Resolution follows this priori
 ## Provider Domain Cache
 
 For favicon resolution, a cache maps provider names to their canonical domains at:
-`~/.craft-agent/provider-domains.json`
+`~/.iweather/provider-domains.json`
 
 **Format:**
 ```json
@@ -719,7 +719,7 @@ Technical steps:
 
 1. Create the source folder:
    ```bash
-   mkdir -p ~/.craft-agent/workspaces/{ws}/sources/my-source
+   mkdir -p ~/.iweather/workspaces/{ws}/sources/my-source
    ```
 
 2. Write `config.json` with appropriate settings (see schemas above)

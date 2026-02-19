@@ -1,58 +1,56 @@
-# Security Policy
+# 安全政策
 
-## Reporting a Vulnerability
+## 报告漏洞
 
-We take security seriously. If you discover a security vulnerability in Craft Agents, please report it responsibly.
+我们非常重视安全问题。如果你在 iWeather 中发现安全漏洞，请负责任地报告。
 
-### How to Report
+### 如何报告
 
-**Please do NOT report security vulnerabilities through public GitHub issues.**
+**请勿通过公开的 GitHub issues 报告安全漏洞。**
 
-Instead, please send an email to: **security@craft.do**
+请发送邮件至项目维护者，包含以下信息：
+- 漏洞描述
+- 重现问题的步骤
+- 潜在影响
+- 任何建议的修复方案（可选）
 
-Include the following information:
-- Description of the vulnerability
-- Steps to reproduce the issue
-- Potential impact
-- Any suggested fixes (optional)
+### 预期处理
 
-### What to Expect
+- **确认收悉**：我们将在 48 小时内确认收到
+- **初步评估**：我们将在 7 天内提供初步评估
+- **解决时间线**：我们力争在 30 天内解决关键问题
 
-- **Acknowledgment**: We will acknowledge receipt within 48 hours
-- **Initial Assessment**: We will provide an initial assessment within 7 days
-- **Resolution Timeline**: We aim to resolve critical issues within 30 days
+### 范围
 
-### Scope
+此政策适用于：
+- iWeather 桌面应用程序
+- `@iweather/*` npm 包
+- 官方 iWeather 仓库
 
-This policy applies to:
-- The Craft Agents desktop application
-- The `@craft-agent/*` npm packages
-- Official Craft Agents repositories
+### 不在范围内
 
-### Out of Scope
+- 第三方依赖（请向其维护者报告）
+- 社会工程攻击
+- 拒绝服务攻击
 
-- Third-party dependencies (report to their maintainers)
-- Social engineering attacks
-- Denial of service attacks
+## 支持的版本
 
-## Supported Versions
+| 版本 | 支持状态          |
+| ---- | ------------------ |
+| 最新 | :white_check_mark: |
+| 旧版本 | :x:               |
 
-| Version | Supported          |
-| ------- | ------------------ |
-| Latest  | :white_check_mark: |
-| < Latest | :x:               |
+我们仅为最新版本提供安全更新。请保持你的安装为最新版本。
 
-We only provide security updates for the latest version. Please keep your installation up to date.
+## 安全最佳实践
 
-## Security Best Practices
+使用 iWeather 时：
 
-When using Craft Agents:
+1. **保护凭据安全**：永远不要提交 `.env` 文件或凭据
+2. **使用环境变量**：将机密存储在环境变量中
+3. **审查权限**：谨慎使用"自动"权限模式
+4. **定期更新**：保持应用程序更新
 
-1. **Keep credentials secure**: Never commit `.env` files or credentials
-2. **Use environment variables**: Store secrets in environment variables
-3. **Review permissions**: Be cautious with "Execute" permission mode
-4. **Update regularly**: Keep the application updated
+## 致谢
 
-## Acknowledgments
-
-We appreciate responsible disclosure and will acknowledge security researchers who report valid vulnerabilities (with their permission).
+我们感谢负责任的披露，并将（在征得同意后）致谢报告有效漏洞的安全研究人员。

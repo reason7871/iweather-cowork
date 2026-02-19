@@ -33,7 +33,7 @@ import type {
   AuthStatusChangeNotification,
   LoginChatGptCompleteNotification,
   SessionConfiguredNotification,
-} from '@craft-agent/codex-types';
+} from '@iweather/codex-types';
 
 import type {
   ThreadStartParams,
@@ -75,7 +75,7 @@ import type {
   ModelListParams,
   ModelListResponse,
   Model,
-} from '@craft-agent/codex-types/v2';
+} from '@iweather/codex-types/v2';
 
 // ============================================================
 // Types

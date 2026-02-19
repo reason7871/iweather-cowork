@@ -263,7 +263,7 @@ export class CraftOAuth {
       }
     } else {
       // Use a default client ID for public clients
-      clientId = 'craft-agent';
+      clientId = 'iweather';
       this.callbacks.onStatus(`Using default client ID: ${clientId}`);
     }
 

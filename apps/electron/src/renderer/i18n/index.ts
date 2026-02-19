@@ -49,7 +49,7 @@ const resources = {
 }
 
 // Storage key for language preference
-const LANGUAGE_STORAGE_KEY = 'craft-agent-language'
+const LANGUAGE_STORAGE_KEY = 'iweather-language'
 
 /**
  * Get saved language from localStorage or return default

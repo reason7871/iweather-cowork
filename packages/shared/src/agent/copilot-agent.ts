@@ -9,7 +9,7 @@
  */
 
 import http from 'node:http';
-import type { AgentEvent } from '@craft-agent/core/types';
+import type { AgentEvent } from '@iweather/core/types';
 import type { FileAttachment } from '../utils/files.ts';
 import type { ThinkingLevel } from './thinking-levels.ts';
 import { type PermissionMode, shouldAllowToolInMode } from './mode-manager.ts';
@@ -1302,7 +1302,7 @@ export class CopilotAgent extends BaseAgent {
   private static readonly BUILT_IN_MCP_SERVERS = new Set([
     'preferences',
     'session',
-    'craft-agents-docs',
+    'iweather-docs',
     'api-bridge',
   ]);
 

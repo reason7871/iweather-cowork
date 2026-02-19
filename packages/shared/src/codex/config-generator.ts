@@ -555,9 +555,9 @@ export function generateCodexConfig(options: CodexConfigGeneratorOptions): Codex
 
   // Craft Agents documentation - public Mintlify MCP server, no auth needed.
   // Provides SearchCraftAgents tool for finding source setup guides.
-  // This matches the craft-agents-docs server in Claude's SDK options.
+  // This matches the iweather-docs server in Claude's SDK options.
   sections.push('# Craft Agents documentation (source setup guides, API references)');
-  sections.push('[mcp_servers.craft-agents-docs]');
+  sections.push('[mcp_servers.iweathers-docs]');
   sections.push('url = "https://agents.craft.do/docs/mcp"');
   sections.push('startup_timeout_sec = 10');
   sections.push('tool_timeout_sec = 30');

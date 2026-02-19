@@ -301,8 +301,8 @@ describe('generateBridgeConfig', () => {
 
 describe('getCredentialCachePath', () => {
   it('should return correct path', () => {
-    const path = getCredentialCachePath('/home/user/.craft-agent/workspaces/ws-123', 'gmail');
-    expect(path).toBe('/home/user/.craft-agent/workspaces/ws-123/sources/gmail/.credential-cache.json');
+    const path = getCredentialCachePath('/home/user/.iweather/workspaces/ws-123', 'gmail');
+    expect(path).toBe('/home/user/.iweather/workspaces/ws-123/sources/gmail/.credential-cache.json');
   });
 });
 

@@ -3,7 +3,7 @@ import * as Sentry from '@sentry/electron/main'
 import { basename, join } from 'path'
 import { existsSync } from 'fs'
 import { rm, readFile, mkdir, writeFile, rename, open } from 'fs/promises'
-import { CraftAgent, type AgentEvent, setPermissionMode, type PermissionMode, unregisterSessionScopedToolCallbacks, AbortReason, type AuthRequest, type AuthResult, type CredentialAuthRequest } from '@craft-agent/shared/agent'
+import { CraftAgent, type AgentEvent, setPermissionMode, type PermissionMode, unregisterSessionScopedToolCallbacks, AbortReason, type AuthRequest, type AuthResult, type CredentialAuthRequest } from '@iweather/shared/agent'
 import {
   CodexBackend,
   CodexAgent,
@@ -14,14 +14,14 @@ import {
   connectionAuthTypeToBackendAuthType,
   createBackendFromConnection,
   type LlmAuthType,
-} from '@craft-agent/shared/agent/backend'
+} from '@iweather/shared/agent/backend'
 import {
   generateCodexConfig,
   generateBridgeConfig,
   getCredentialCachePath,
   type CredentialCacheEntry,
-} from '@craft-agent/shared/codex'
-import { getLlmConnection, getDefaultLlmConnection } from '@craft-agent/shared/config'
+} from '@iweather/shared/codex'
+import { getLlmConnection, getDefaultLlmConnection } from '@iweather/shared/config'
 import { sessionLog, isDebugMode, getLogFilePath } from './logger'
 import { InitGate } from './init-gate'
 import { createSdkMcpServer } from '@anthropic-ai/claude-agent-sdk'
@@ -37,8 +37,8 @@ import {
   migrateOrphanedDefaultConnections,
   MODEL_REGISTRY,
   type Workspace,
-} from '@craft-agent/shared/config'
-import { loadWorkspaceConfig } from '@craft-agent/shared/workspaces'
+} from '@iweather/shared/config'
+import { loadWorkspaceConfig } from '@iweather/shared/workspaces'
 import {
   // Session persistence functions
   listSessions as listStoredSessions,
@@ -67,25 +67,25 @@ import {
   type SessionMetadata,
   type SessionStatus,
   pickSessionFields,
-} from '@craft-agent/shared/sessions'
-import { loadWorkspaceSources, loadAllSources, getSourcesBySlugs, isSourceUsable, type LoadedSource, type McpServerConfig, getSourcesNeedingAuth, getSourceCredentialManager, getSourceServerBuilder, type SourceWithCredential, isApiOAuthProvider, SERVER_BUILD_ERRORS, TokenRefreshManager, createTokenGetter } from '@craft-agent/shared/sources'
-import { ConfigWatcher, type ConfigWatcherCallbacks } from '@craft-agent/shared/config'
-import { getValidClaudeOAuthToken } from '@craft-agent/shared/auth'
-import { setPathToClaudeCodeExecutable, setInterceptorPath, setExecutable } from '@craft-agent/shared/agent'
-import { toolMetadataStore } from '@craft-agent/shared/network-interceptor'
-import { getCredentialManager } from '@craft-agent/shared/credentials'
-import { CraftMcpClient } from '@craft-agent/shared/mcp'
+} from '@iweather/shared/sessions'
+import { loadWorkspaceSources, loadAllSources, getSourcesBySlugs, isSourceUsable, type LoadedSource, type McpServerConfig, getSourcesNeedingAuth, getSourceCredentialManager, getSourceServerBuilder, type SourceWithCredential, isApiOAuthProvider, SERVER_BUILD_ERRORS, TokenRefreshManager, createTokenGetter } from '@iweather/shared/sources'
+import { ConfigWatcher, type ConfigWatcherCallbacks } from '@iweather/shared/config'
+import { getValidClaudeOAuthToken } from '@iweather/shared/auth'
+import { setPathToClaudeCodeExecutable, setInterceptorPath, setExecutable } from '@iweather/shared/agent'
+import { toolMetadataStore } from '@iweather/shared/network-interceptor'
+import { getCredentialManager } from '@iweather/shared/credentials'
+import { CraftMcpClient } from '@iweather/shared/mcp'
 import { type Session, type Message, type SessionEvent, type FileAttachment, type StoredAttachment, type SendMessageOptions, IPC_CHANNELS, generateMessageId } from '../shared/types'
-import { formatPathsToRelative, formatToolInputPaths, perf, encodeIconToDataUrl, getEmojiIcon, resetSummarizationClient, resolveToolIcon } from '@craft-agent/shared/utils'
-import { loadAllSkills, loadSkillBySlug, type LoadedSkill } from '@craft-agent/shared/skills'
-import type { ToolDisplayMeta } from '@craft-agent/core/types'
-import { getToolIconsDir, isCodexModel, getMiniModel, isAnthropicProvider, DEFAULT_MODEL, DEFAULT_CODEX_MODEL } from '@craft-agent/shared/config'
-import type { SummarizeCallback } from '@craft-agent/shared/sources'
-import { type ThinkingLevel, DEFAULT_THINKING_LEVEL } from '@craft-agent/shared/agent/thinking-levels'
-import { evaluateAutoLabels } from '@craft-agent/shared/labels/auto'
-import { listLabels } from '@craft-agent/shared/labels/storage'
-import { extractLabelId } from '@craft-agent/shared/labels'
-import { HookSystem, type HookSystemMetadataSnapshot } from '@craft-agent/shared/hooks-simple'
+import { formatPathsToRelative, formatToolInputPaths, perf, encodeIconToDataUrl, getEmojiIcon, resetSummarizationClient, resolveToolIcon } from '@iweather/shared/utils'
+import { loadAllSkills, loadSkillBySlug, type LoadedSkill } from '@iweather/shared/skills'
+import type { ToolDisplayMeta } from '@iweather/core/types'
+import { getToolIconsDir, isCodexModel, getMiniModel, isAnthropicProvider, DEFAULT_MODEL, DEFAULT_CODEX_MODEL } from '@iweather/shared/config'
+import type { SummarizeCallback } from '@iweather/shared/sources'
+import { type ThinkingLevel, DEFAULT_THINKING_LEVEL } from '@iweather/shared/agent/thinking-levels'
+import { evaluateAutoLabels } from '@iweather/shared/labels/auto'
+import { listLabels } from '@iweather/shared/labels/storage'
+import { extractLabelId } from '@iweather/shared/labels'
+import { HookSystem, type HookSystemMetadataSnapshot } from '@iweather/shared/hooks-simple'
 
 // Import and re-export (extracted to avoid Electron dependency in tests)
 import { sanitizeForTitle } from './title-sanitizer'
@@ -317,7 +317,7 @@ async function writeFileSecure(targetPath: string, content: string, mode: number
 async function setupCodexSessionConfig(
   sessionPath: string,
   sources: LoadedSource[],
-  mcpServerConfigs: Record<string, import('@craft-agent/shared/agent/backend').SdkMcpServerConfig>,
+  mcpServerConfigs: Record<string, import('@iweather/shared/agent/backend').SdkMcpServerConfig>,
   sessionId?: string,
   workspaceRootPath?: string
 ): Promise<string> {
@@ -428,7 +428,7 @@ async function regenCodexConfigAndReconnect(
   agent: CodexBackend,
   sessionPath: string,
   enabledSources: LoadedSource[],
-  mcpServers: Record<string, import('@craft-agent/shared/agent/backend').SdkMcpServerConfig>,
+  mcpServers: Record<string, import('@iweather/shared/agent/backend').SdkMcpServerConfig>,
   sessionId: string,
   workspaceRootPath: string,
   context: string
@@ -535,7 +535,7 @@ function resolveToolDisplayMeta(
         'preferences': {
           'update_user_preferences': 'Update Preferences',
         },
-        'craft-agents-docs': {
+        'iweather-docs': {
           'SearchCraftAgents': 'Search Docs',
         },
       }
@@ -611,7 +611,7 @@ function resolveToolDisplayMeta(
 
   // CLI tool icon resolution for Bash commands
   // Parses the command string to detect known tools (git, npm, docker, etc.)
-  // and resolves their brand icon from ~/.craft-agent/tool-icons/
+  // and resolves their brand icon from ~/.iweather/tool-icons/
   if (toolName === 'Bash' && toolInput?.command) {
     try {
       const toolIconsDir = getToolIconsDir()
@@ -1079,7 +1079,7 @@ export class SessionManager {
       onSkillChange: async (slug, skill) => {
         sessionLog.info(`Skill '${slug}' changed:`, skill ? 'updated' : 'deleted')
         // Broadcast updated list to UI
-        const { loadAllSkills } = await import('@craft-agent/shared/skills')
+        const { loadAllSkills } = await import('@iweather/shared/skills')
         const skills = loadAllSkills(workspaceRootPath)
         this.broadcastSkillsChanged(skills)
       },
@@ -1220,7 +1220,7 @@ export class SessionManager {
   /**
    * Broadcast app theme changed event to all windows
    */
-  private broadcastAppThemeChanged(theme: import('@craft-agent/shared/config').ThemeOverrides | null): void {
+  private broadcastAppThemeChanged(theme: import('@iweather/shared/config').ThemeOverrides | null): void {
     if (!this.windowManager) return
     sessionLog.info(`Broadcasting app theme changed`)
     this.windowManager.broadcastToAll(IPC_CHANNELS.THEME_APP_CHANGED, theme)
@@ -1238,7 +1238,7 @@ export class SessionManager {
   /**
    * Broadcast skills changed event to all windows
    */
-  private broadcastSkillsChanged(skills: import('@craft-agent/shared/skills').LoadedSkill[]): void {
+  private broadcastSkillsChanged(skills: import('@iweather/shared/skills').LoadedSkill[]): void {
     if (!this.windowManager) return
     sessionLog.info(`Broadcasting skills changed (${skills.length} skills)`)
     this.windowManager.broadcastToAll(IPC_CHANNELS.SKILLS_CHANGED, skills)
@@ -1246,7 +1246,7 @@ export class SessionManager {
 
   /**
    * Broadcast default permissions changed event to all windows
-   * Triggered when ~/.craft-agent/permissions/default.json changes
+   * Triggered when ~/.iweather/permissions/default.json changes
    */
   private broadcastDefaultPermissionsChanged(): void {
     if (!this.windowManager) return
@@ -1265,7 +1265,7 @@ export class SessionManager {
     const workspaceRootPath = managed.workspace.rootPath
     sessionLog.info(`Reloading sources for session ${managed.id}`)
 
-    // Reload all sources from disk (craft-agents-docs is always available as MCP server)
+    // Reload all sources from disk (iweather-docs is always available as MCP server)
     const allSources = loadAllSources(workspaceRootPath)
     managed.agent.setAllSources(allSources)
 
@@ -1938,7 +1938,7 @@ export class SessionManager {
       }
 
       // Update source config to mark as authenticated
-      const { markSourceAuthenticated } = await import('@craft-agent/shared/sources')
+      const { markSourceAuthenticated } = await import('@iweather/shared/sources')
       markSourceAuthenticated(managed.workspace.rootPath, request.sourceSlug)
 
       // Mark source as unseen so fresh guide is injected on next message
@@ -3158,7 +3158,7 @@ export class SessionManager {
     }
 
     // Validate connection exists
-    const { getLlmConnection } = await import('@craft-agent/shared/config/storage')
+    const { getLlmConnection } = await import('@iweather/shared/config/storage')
     const connection = getLlmConnection(connectionSlug)
     if (!connection) {
       sessionLog.warn(`setSessionConnection: connection "${connectionSlug}" not found`)
@@ -3257,7 +3257,7 @@ export class SessionManager {
         return { success: false, error: 'Session file not found' }
       }
 
-      const { VIEWER_URL } = await import('@craft-agent/shared/branding')
+      const { VIEWER_URL } = await import('@iweather/shared/branding')
       const response = await fetch(`${VIEWER_URL}/s/api`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -3321,7 +3321,7 @@ export class SessionManager {
         return { success: false, error: 'Session file not found' }
       }
 
-      const { VIEWER_URL } = await import('@craft-agent/shared/branding')
+      const { VIEWER_URL } = await import('@iweather/shared/branding')
       const response = await fetch(`${VIEWER_URL}/s/api/${managed.sharedId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -3366,7 +3366,7 @@ export class SessionManager {
     this.sendEvent({ type: 'async_operation', sessionId, isOngoing: true }, managed.workspace.id)
 
     try {
-      const { VIEWER_URL } = await import('@craft-agent/shared/branding')
+      const { VIEWER_URL } = await import('@iweather/shared/branding')
       const response = await fetch(
         `${VIEWER_URL}/s/api/${managed.sharedId}`,
         { method: 'DELETE' }
@@ -4202,7 +4202,7 @@ export class SessionManager {
 
       // Skills mentioned via @mentions are handled by the SDK's Skill tool.
       // The UI layer (extractBadges in mentions.ts) injects fully-qualified names
-      // in the rawText, and canUseTool in craft-agent.ts provides a fallback
+      // in the rawText, and canUseTool in iweather-agent.ts provides a fallback
       // to qualify short names. No transformation needed here.
 
       // Ensure main process reads tool metadata from the correct session directory.

@@ -6,8 +6,8 @@
  * 2. Stripped from the text content sent to Codex
  *
  * The skill extraction logic lives in CodexAgent.buildUserInput(), which uses:
- * - parseMentions() from @craft-agent/shared/mentions (parses [skill:slug] syntax)
- * - stripAllMentions() from @craft-agent/shared/mentions (removes all [bracket] mentions)
+ * - parseMentions() from @iweather/shared/mentions (parses [skill:slug] syntax)
+ * - stripAllMentions() from @iweather/shared/mentions (removes all [bracket] mentions)
  * - loadAllSkills() from skills/storage (resolves skill paths)
  *
  * Since buildUserInput() is private, we test the shared parsing functions directly

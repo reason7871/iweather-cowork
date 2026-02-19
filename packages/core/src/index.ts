@@ -1,5 +1,5 @@
 /**
- * @craft-agent/core
+ * @iweather/core
  *
  * Core types and utilities for Craft Agent.
  *

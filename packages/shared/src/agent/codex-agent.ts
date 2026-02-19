@@ -14,11 +14,11 @@
  * for UI events and server requests for approval prompts.
  */
 
-import type { AgentEvent } from '@craft-agent/core/types';
+import type { AgentEvent } from '@iweather/core/types';
 import type { FileAttachment } from '../utils/files.ts';
 import { extractWorkspaceSlug } from '../utils/workspace.ts';
 import type { ThinkingLevel } from './thinking-levels.ts';
-import type { AuthRequest } from '@craft-agent/session-tools-core';
+import type { AuthRequest } from '@iweather/session-tools-core';
 import { type PermissionMode, shouldAllowToolInMode } from './mode-manager.ts';
 import type { LoadedSource } from '../sources/types.ts';
 
@@ -94,7 +94,7 @@ import {
 import type {
   RequestId,
   ReasoningEffort,
-} from '@craft-agent/codex-types';
+} from '@iweather/codex-types';
 import type {
   AskForApproval,
   SandboxMode,
@@ -102,7 +102,7 @@ import type {
   CommandExecutionApprovalDecision,
   FileChangeApprovalDecision,
   ThreadTokenUsageUpdatedNotification,
-} from '@craft-agent/codex-types/v2';
+} from '@iweather/codex-types/v2';
 
 // ============================================================
 // Constants
@@ -1227,7 +1227,7 @@ export class CodexAgent extends BaseAgent {
   private static readonly BUILT_IN_MCP_SERVERS = new Set([
     'preferences',
     'session',
-    'craft-agents-docs',
+    'iweather-docs',
     'api-bridge',
   ]);
 

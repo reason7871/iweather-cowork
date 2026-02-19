@@ -14,7 +14,7 @@ Hooks allow you to trigger actions automatically when specific events occur in C
 Hooks are configured in `hooks.json` at the root of your workspace:
 
 ```
-~/.craft-agent/workspaces/{workspaceId}/hooks.json
+~/.iweather/workspaces/{workspaceId}/hooks.json
 ```
 
 ## Basic Structure

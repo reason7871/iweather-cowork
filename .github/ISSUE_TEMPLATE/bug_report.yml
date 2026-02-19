@@ -1,17 +1,17 @@
-name: Bug Report
-description: Report a bug or unexpected behavior in Craft Agents
+name: Bug 报告
+description: 报告 iWeather 中的 bug 或异常行为
 labels: ["bug"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to report a bug! Please fill out the sections below so we can reproduce and fix the issue.
+        感谢你花时间报告 bug！请填写以下部分，以便我们复现和修复问题。
 
   - type: input
     id: version
     attributes:
-      label: Craft Agents Version
-      description: "Found in Settings or the title bar (e.g. 0.4.6)"
+      label: iWeather 版本
+      description: "在设置或标题栏中找到（例如 0.4.6）"
       placeholder: "0.4.6"
     validations:
       required: true
@@ -19,7 +19,7 @@ body:
   - type: dropdown
     id: os
     attributes:
-      label: Operating System
+      label: 操作系统
       options:
         - macOS (Apple Silicon)
         - macOS (Intel)
@@ -28,15 +28,15 @@ body:
         - Linux (Ubuntu/Debian)
         - Linux (Fedora/RHEL)
         - Linux (Arch)
-        - Linux (Other)
+        - Linux (其他)
     validations:
       required: true
 
   - type: input
     id: os_version
     attributes:
-      label: OS Version
-      description: "e.g. macOS 15.3, Windows 11 24H2, Ubuntu 24.04"
+      label: 系统版本
+      description: "例如 macOS 15.3, Windows 11 24H2, Ubuntu 24.04"
       placeholder: "macOS 15.3"
     validations:
       required: true
@@ -44,37 +44,37 @@ body:
   - type: dropdown
     id: ai_provider
     attributes:
-      label: AI Provider
-      description: Which AI provider/connection are you using?
+      label: AI 提供商
+      description: 你使用的是哪个 AI 提供商/连接？
       options:
-        - Anthropic API (direct)
-        - Anthropic API (custom endpoint)
+        - Anthropic API (直连)
+        - Anthropic API (自定义端点)
         - OpenAI / Codex
         - Copilot (GitHub)
-        - Other
+        - 其他
     validations:
       required: true
 
   - type: input
     id: model
     attributes:
-      label: Model
-      description: "Which model are you using? (e.g. Claude Opus 4.6, GPT-4.1)"
+      label: 模型
+      description: "你使用的是哪个模型？（例如 Claude Opus 4.6, GPT-4.1）"
       placeholder: "Claude Opus 4.6"
 
   - type: textarea
     id: description
     attributes:
-      label: Description
-      description: A clear description of what the bug is.
+      label: 问题描述
+      description: 清晰描述 bug 是什么。
     validations:
       required: true
 
   - type: textarea
     id: steps
     attributes:
-      label: Steps to Reproduce
-      description: Step-by-step instructions to reproduce the behavior.
+      label: 复现步骤
+      description: 复现行为的分步说明。
       value: |
         1.
         2.
@@ -85,39 +85,39 @@ body:
   - type: textarea
     id: expected
     attributes:
-      label: Expected Behavior
-      description: What did you expect to happen?
+      label: 预期行为
+      description: 你期望发生什么？
     validations:
       required: true
 
   - type: textarea
     id: actual
     attributes:
-      label: Actual Behavior
-      description: What actually happened?
+      label: 实际行为
+      description: 实际发生了什么？
     validations:
       required: true
 
   - type: textarea
     id: screenshots
     attributes:
-      label: Screenshots / Screen Recordings
+      label: 截图 / 屏幕录制
       description: |
-        For **UI issues**, please attach screenshots or screen recordings showing the problem.
-        You can drag and drop images/videos directly into this field.
+        对于 **UI 问题**，请附上显示问题的截图或屏幕录制。
+        你可以直接将图片/视频拖放到此字段中。
 
   - type: textarea
     id: logs
     attributes:
-      label: Debug Logs
+      label: 调试日志
       description: |
-        For **non-UI issues** (crashes, errors, connection problems), please attach relevant logs from a debug session.
+        对于 **非 UI 问题**（崩溃、错误、连接问题），请附上调试会话的相关日志。
 
-        Launch the app with `-- --debug` and reproduce the issue. See the [Troubleshooting section in the README](https://github.com/lukilabs/craft-agents-oss#troubleshooting) for platform-specific commands and log file locations.
+        使用 `-- --debug` 启动应用并复现问题。有关各平台的命令和日志文件位置，请参阅 README 中的故障排除部分。
       render: shell
 
   - type: textarea
     id: additional
     attributes:
-      label: Additional Context
-      description: Any other context about the problem (MCP sources used, workspace config, etc.)
+      label: 附加信息
+      description: 关于问题的任何其他背景信息（使用的 MCP 数据源、工作区配置等）

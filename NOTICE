@@ -1,15 +1,9 @@
-Craft Agents
-Copyright 2026 Craft Docs Ltd.
+iWeather
+基于 Claude Agent SDK 的智能 AI 助手桌面应用
 
-This product includes software developed by Craft Docs Ltd.
-https://craft.do
-
----
-
-This project uses the Claude Agent SDK, which is subject to Anthropic's
-Commercial Terms of Service: https://www.anthropic.com/legal/commercial-terms
+本项目使用 Claude Agent SDK，受 Anthropic 商业服务条款约束：
+https://www.anthropic.com/legal/commercial-terms
 
 ---
 
-Third-party dependencies are listed in package.json files and are subject
-to their respective licenses.
+第三方依赖列在 package.json 文件中，受其各自许可证约束。

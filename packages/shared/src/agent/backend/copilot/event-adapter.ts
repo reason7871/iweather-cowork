@@ -7,7 +7,7 @@
  * The Copilot SDK uses SessionEvent types with discriminated unions on the `type` field.
  */
 
-import type { AgentEvent, TypedError } from '@craft-agent/core/types';
+import type { AgentEvent, TypedError } from '@iweather/core/types';
 import type { SessionEvent } from '@github/copilot-sdk';
 import { BaseEventAdapter } from '../base-event-adapter.ts';
 import { COPILOT_TOOL_NAME_MAP } from '../../copilot-agent.ts';

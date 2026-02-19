@@ -5,7 +5,7 @@
  * instance of these tools with session-specific callbacks and state.
  *
  * This file is a thin adapter that wraps the shared handlers from
- * @craft-agent/session-tools-core for use with the Claude SDK.
+ * @iweather/session-tools-core for use with the Claude SDK.
  *
  * Tools included:
  * - SubmitPlan: Submit a plan file for user review/display
@@ -55,7 +55,7 @@ import {
   // Types
   type ToolResult,
   type AuthRequest,
-} from '@craft-agent/session-tools-core';
+} from '@iweather/session-tools-core';
 import { createLLMTool, type LLMQueryRequest, type LLMQueryResult } from './llm-tool.ts';
 
 // Re-export types for backward compatibility
@@ -72,7 +72,7 @@ export type {
   GoogleService,
   SlackService,
   MicrosoftService,
-} from '@craft-agent/session-tools-core';
+} from '@iweather/session-tools-core';
 
 // ============================================================
 // Session-Scoped Tool Callbacks
@@ -288,12 +288,12 @@ Use this after editing configuration files to check for errors before they take 
 Returns structured validation results with errors, warnings, and suggestions.
 
 **Targets:**
-- \`config\`: Validates ~/.craft-agent/config.json (workspaces, model, settings)
-- \`sources\`: Validates all sources in ~/.craft-agent/workspaces/{workspace}/sources/*/config.json
-- \`statuses\`: Validates ~/.craft-agent/workspaces/{workspace}/statuses/config.json
-- \`preferences\`: Validates ~/.craft-agent/preferences.json
+- \`config\`: Validates ~/.iweather/config.json (workspaces, model, settings)
+- \`sources\`: Validates all sources in ~/.iweather/workspaces/{workspace}/sources/*/config.json
+- \`statuses\`: Validates ~/.iweather/workspaces/{workspace}/statuses/config.json
+- \`preferences\`: Validates ~/.iweather/preferences.json
 - \`permissions\`: Validates permissions.json files
-- \`tool-icons\`: Validates ~/.craft-agent/tool-icons/tool-icons.json
+- \`tool-icons\`: Validates ~/.iweather/tool-icons/tool-icons.json
 - \`all\`: Validates all configuration files
 
 **Reference:** ${DOC_REFS.sources}`,

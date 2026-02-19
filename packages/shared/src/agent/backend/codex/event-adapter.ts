@@ -8,7 +8,7 @@
  * which provide more granular control than the previous ThreadEvent format.
  */
 
-import type { AgentEvent, AgentEventUsage } from '@craft-agent/core/types';
+import type { AgentEvent, AgentEventUsage } from '@iweather/core/types';
 
 import { BaseEventAdapter } from '../base-event-adapter.ts';
 import type { ReadCommandInfo } from '../read-patterns.ts';
@@ -35,7 +35,7 @@ import type {
   McpToolCallProgressNotification,
   ConfigWarningNotification,
   WindowsWorldWritableWarningNotification,
-} from '@craft-agent/codex-types/v2';
+} from '@iweather/codex-types/v2';
 
 // Simplified notification types for delta events
 interface OutputDeltaNotification {

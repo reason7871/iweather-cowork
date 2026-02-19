@@ -5,11 +5,11 @@
  * Uses recursive directory watching for simplicity and reliability.
  *
  * Watched paths:
- * - ~/.craft-agent/config.json - Main app configuration
- * - ~/.craft-agent/preferences.json - User preferences
- * - ~/.craft-agent/theme.json - App-level theme overrides
- * - ~/.craft-agent/themes/*.json - Preset theme files (app-level)
- * - ~/.craft-agent/workspaces/{slug}/ - Workspace directory (recursive)
+ * - ~/.iweather/config.json - Main app configuration
+ * - ~/.iweather/preferences.json - User preferences
+ * - ~/.iweather/theme.json - App-level theme overrides
+ * - ~/.iweather/themes/*.json - Preset theme files (app-level)
+ * - ~/.iweather/workspaces/{slug}/ - Workspace directory (recursive)
  *   - sources/{slug}/config.json, guide.md, permissions.json
  *   - skills/{slug}/SKILL.md, icon.*
  *   - permissions.json
@@ -19,40 +19,40 @@ import { watch, existsSync, readdirSync, statSync, readFileSync, mkdirSync } fro
 import { join, dirname, basename, relative } from 'path';
 import { homedir } from 'os';
 import type { FSWatcher } from 'fs';
-import { debug, perf } from '@craft-agent/shared/utils';
-import { readJsonFileSync } from '@craft-agent/shared/utils/files';
-import { loadStoredConfig, type StoredConfig } from '@craft-agent/shared/config';
+import { debug, perf } from '@iweather/shared/utils';
+import { readJsonFileSync } from '@iweather/shared/utils/files';
+import { loadStoredConfig, type StoredConfig } from '@iweather/shared/config';
 import {
   validateConfig,
   validatePreferences,
   validateSource,
   type ValidationResult,
-} from '@craft-agent/shared/config';
-import type { LoadedSource, SourceGuide } from '@craft-agent/shared/sources';
+} from '@iweather/shared/config';
+import type { LoadedSource, SourceGuide } from '@iweather/shared/sources';
 import {
   loadSource,
   loadWorkspaceSources,
   loadSourceGuide,
   sourceNeedsIconDownload,
   downloadSourceIcon,
-} from '@craft-agent/shared/sources';
-import { permissionsConfigCache, getAppPermissionsDir } from '@craft-agent/shared/agent';
-import { getWorkspacePath, getWorkspaceSourcesPath, getWorkspaceSkillsPath } from '@craft-agent/shared/workspaces';
-import type { LoadedSkill } from '@craft-agent/shared/skills';
-import { loadSkill, loadAllSkills, skillNeedsIconDownload, downloadSkillIcon } from '@craft-agent/shared/skills';
+} from '@iweather/shared/sources';
+import { permissionsConfigCache, getAppPermissionsDir } from '@iweather/shared/agent';
+import { getWorkspacePath, getWorkspaceSourcesPath, getWorkspaceSkillsPath } from '@iweather/shared/workspaces';
+import type { LoadedSkill } from '@iweather/shared/skills';
+import { loadSkill, loadAllSkills, skillNeedsIconDownload, downloadSkillIcon } from '@iweather/shared/skills';
 import {
   loadStatusConfig,
   statusNeedsIconDownload,
   downloadStatusIcon,
-} from '@craft-agent/shared/statuses';
-import { loadAppTheme, loadPresetThemes, loadPresetTheme, getAppThemesDir } from '@craft-agent/shared/config';
-import type { ThemeOverrides, PresetTheme } from '@craft-agent/shared/config';
+} from '@iweather/shared/statuses';
+import { loadAppTheme, loadPresetThemes, loadPresetTheme, getAppThemesDir } from '@iweather/shared/config';
+import type { ThemeOverrides, PresetTheme } from '@iweather/shared/config';
 
 // ============================================================
 // Constants
 // ============================================================
 
-const CONFIG_DIR = join(homedir(), '.craft-agent');
+const CONFIG_DIR = join(homedir(), '.iweather');
 const CONFIG_FILE = join(CONFIG_DIR, 'config.json');
 const PREFERENCES_FILE = join(CONFIG_DIR, 'preferences.json');
 
@@ -103,7 +103,7 @@ export interface ConfigWatcherCallbacks {
   onSkillsListChange?: (skills: LoadedSkill[]) => void;
 
   // Permissions callbacks
-  /** Called when app-level default permissions change (~/.craft-agent/permissions/default.json) */
+  /** Called when app-level default permissions change (~/.iweather/permissions/default.json) */
   onDefaultPermissionsChange?: () => void;
   /** Called when workspace permissions.json changes */
   onWorkspacePermissionsChange?: (workspaceId: string) => void;
@@ -891,7 +891,7 @@ export class ConfigWatcher {
   }
 
   /**
-   * Watch app-level themes directory (~/.craft-agent/themes/)
+   * Watch app-level themes directory (~/.iweather/themes/)
    */
   private watchAppThemesDir(): void {
     const themesDir = getAppThemesDir();
@@ -920,7 +920,7 @@ export class ConfigWatcher {
   }
 
   /**
-   * Watch app-level permissions directory (~/.craft-agent/permissions/)
+   * Watch app-level permissions directory (~/.iweather/permissions/)
    * Watches for changes to default.json which contains the default read-only patterns
    */
   private watchAppPermissionsDir(): void {

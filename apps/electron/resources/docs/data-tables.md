@@ -1,35 +1,35 @@
-# Data Tables Guide
+# 数据表格指南
 
-This guide covers how to present structured data using datatable and spreadsheet blocks, and how to use the `transform_data` tool for large datasets.
+本指南介绍如何使用 datatable 和 spreadsheet 块展示结构化数据，以及如何使用 `transform_data` 工具处理大型数据集。
 
-## Overview
+## 概述
 
-Craft Agents supports three ways to display tabular data:
+iWeather 支持三种方式显示表格数据：
 
-| Format | Best For | Interactivity |
-|--------|----------|---------------|
-| **Markdown table** | Small, simple data (3-4 rows) | None |
-| **`datatable` block** | Query results, comparisons, any data users may sort/filter | Sort, filter, group-by, search |
-| **`spreadsheet` block** | Financial reports, exports, data users may download as .xlsx | Sort, export to Excel/CSV |
+| 格式 | 适用场景 | 交互性 |
+|------|----------|--------|
+| **Markdown 表格** | 小型简单数据（3-4 行） | 无 |
+| **`datatable` 块** | 查询结果、比较、用户可能排序/筛选的任何数据 | 排序、筛选、分组、搜索 |
+| **`spreadsheet` 块** | 财务报表、导出、用户可能下载为 .xlsx 的数据 | 排序、导出到 Excel/CSV |
 
-**Key principle:** For datasets with 20+ rows, use the `transform_data` tool to write data to a JSON file and reference it via `"src"` instead of inlining all rows. This dramatically reduces token usage and cost.
+**关键原则：** 对于 20+ 行的数据集，使用 `transform_data` 工具将数据写入 JSON 文件并通过 `"src"` 引用，而不是内联所有行。这可以显著减少令牌使用和成本。
 
-## Inline Tables (Small Datasets)
+## 内联表格（小型数据集）
 
-For datasets under 20 rows, inline the data directly in the markdown block:
+对于 20 行以下的数据集，直接在 markdown 块中内联数据：
 
 ### Datatable
 
 ````
 ```datatable
 {
-  "title": "Top Users",
+  "title": "顶级用户",
   "columns": [
-    { "key": "name", "label": "Name", "type": "text" },
-    { "key": "revenue", "label": "Revenue", "type": "currency" },
-    { "key": "growth", "label": "Growth", "type": "percent" },
-    { "key": "active", "label": "Active", "type": "boolean" },
-    { "key": "tier", "label": "Tier", "type": "badge" }
+    { "key": "name", "label": "名称", "type": "text" },
+    { "key": "revenue", "label": "收入", "type": "currency" },
+    { "key": "growth", "label": "增长", "type": "percent" },
+    { "key": "active", "label": "活跃", "type": "boolean" },
+    { "key": "tier", "label": "等级", "type": "badge" }
   ],
   "rows": [
     { "name": "Acme Corp", "revenue": 4200000, "growth": 0.152, "active": true, "tier": "Enterprise" },
@@ -45,85 +45,79 @@ For datasets under 20 rows, inline the data directly in the markdown block:
 ```spreadsheet
 {
   "filename": "q4-revenue.xlsx",
-  "sheetName": "Revenue",
+  "sheetName": "收入",
   "columns": [
-    { "key": "month", "label": "Month", "type": "text" },
-    { "key": "revenue", "label": "Revenue", "type": "currency" }
+    { "key": "month", "label": "月份", "type": "text" },
+    { "key": "revenue", "label": "收入", "type": "currency" }
   ],
   "rows": [
-    { "month": "October", "revenue": 125000 },
-    { "month": "November", "revenue": 142000 }
+    { "month": "十月", "revenue": 125000 },
+    { "month": "十一月", "revenue": 142000 }
   ]
 }
 ```
 ````
 
-## Column Types Reference
+## 列类型参考
 
-| Type | Input Format | Rendered As | Example Input | Example Output |
-|------|-------------|-------------|---------------|----------------|
-| `text` | Any string | Plain text | `"John Doe"` | John Doe |
-| `number` | Number | Formatted number | `1500000` | 1,500,000 |
-| `currency` | Raw number (not formatted) | Dollar amount | `4200000` | $4,200,000 |
-| `percent` | Decimal (0-1 range) | Percentage with color | `0.152` | +15.2% (green) |
-| `boolean` | `true`/`false` | Yes/No | `true` | Yes |
-| `date` | Date string | Formatted date | `"2025-01-15"` | Jan 15, 2025 |
-| `badge` | String | Colored status pill | `"Active"` | Active (badge) |
+| 类型 | 输入格式 | 渲染为 | 输入示例 | 输出示例 |
+|------|----------|--------|----------|----------|
+| `text` | 任意字符串 | 纯文本 | `"John Doe"` | John Doe |
+| `number` | 数字 | 格式化数字 | `1500000` | 1,500,000 |
+| `currency` | 原始数字（非格式化） | 美元金额 | `4200000` | $4,200,000 |
+| `percent` | 小数（0-1 范围） | 带颜色的百分比 | `0.152` | +15.2%（绿色） |
+| `boolean` | `true`/`false` | 是/否 | `true` | 是 |
+| `date` | 日期字符串 | 格式化日期 | `"2025-01-15"` | 2025年1月15日 |
+| `badge` | 字符串 | 彩色状态标签 | `"Active"` | Active（徽章） |
 
-**Important notes:**
-- `currency` — Pass the raw number, NOT a formatted string. `4200000` renders as `$4,200,000`.
-- `percent` — Pass as decimal. `0.152` renders as `+15.2%`. Positive values are green, negative are red.
-- `boolean` — Use actual `true`/`false`, not strings.
+**重要说明：**
+- `currency` — 传递原始数字，而非格式化字符串。`4200000` 渲染为 `$4,200,000`。
+- `percent` — 以小数传递。`0.152` 渲染为 `+15.2%`。正值为绿色，负值为红色。
+- `boolean` — 使用实际的 `true`/`false`，而非字符串。
 
-## File-Backed Tables (Large Datasets)
+## 文件支持的表格（大型数据集）
 
-### When to Use
+### 何时使用
 
-Use the `transform_data` tool + `"src"` field when:
-- Dataset has **20+ rows** — inlining costs ~$1+ in tokens for 100 rows
-- Data comes from a **large API response** or tool result
-- You need to **filter, reshape, or aggregate** raw data before display
-- Data is in **CSV, TSV, or unstructured text** that needs parsing
-- You want to **join data from multiple sources**
+在以下情况下使用 `transform_data` 工具 + `"src"` 字段：
+- 数据集有 **20+ 行** — 内联 100 行在令牌上花费约 $1+
+- 数据来自 **大型 API 响应** 或工具结果
+- 需要 **筛选、重塑或聚合** 原始数据后再显示
+- 数据为 **CSV、TSV 或非结构化文本**，需要解析
+- 想要 **连接多个数据源的数据**
 
-### The transform_data Tool
+### transform_data 工具
 
-`transform_data` runs a script in an isolated subprocess that reads input files and writes structured JSON output.
+`transform_data` 在隔离的子进程中运行脚本，读取输入文件并写入结构化 JSON 输出。
 
-**Parameters:**
+**参数：**
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `language` | `"python3"` \| `"node"` \| `"bun"` | Script runtime |
-| `script` | string | Transform script source code |
-| `inputFiles` | string[] | Input file paths relative to session dir |
-| `outputFile` | string | Output file name (written to session `data/` dir) |
+| 参数 | 类型 | 描述 |
+|------|------|------|
+| `language` | `"python3"` \| `"node"` \| `"bun"` | 脚本运行时 |
+| `script` | 字符串 | 转换脚本源代码 |
+| `inputFiles` | 字符串[] | 相对于会话目录的输入文件路径 |
+| `outputFile` | 字符串 | 输出文件名（写入会话 `data/` 目录） |
 
-**Path conventions:**
-- **Input files** are relative to the session directory. Common locations:
-  - `long_responses/tool_result_abc.txt` — saved tool results
-  - `data/previous_output.json` — output from a prior transform
-  - `attachments/data.csv` — user-attached files
-- **Output file** is relative to the session `data/` directory. Just provide the filename (e.g., `"transactions.json"`)
+**路径约定：**
+- **输入文件** 相对于会话目录。常见位置：
+  - `long_responses/tool_result_abc.txt` — 保存的工具结果
+  - `data/previous_output.json` — 之前转换的输出
+  - `attachments/data.csv` — 用户附加的文件
+- **输出文件** 相对于会话 `data/` 目录。只需提供文件名（例如 `"transactions.json"`）
 
-**Script argument conventions:**
-- Input file paths are passed as positional command-line arguments
-- The **last argument** is always the output file path
-- Python: `sys.argv[1:-1]` = input files, `sys.argv[-1]` = output path
-- Node/Bun: `process.argv.slice(2, -1)` = input files, `process.argv.at(-1)` = output path
+### 输出 JSON 模式
 
-### Output JSON Schema
+输出文件应包含以下格式之一的有效 JSON：
 
-The output file should contain valid JSON in one of these formats:
-
-**Full format (recommended):**
+**完整格式（推荐）：**
 ```json
 {
-  "title": "Recent Transactions",
+  "title": "最近交易",
   "columns": [
-    { "key": "date", "label": "Date", "type": "date" },
-    { "key": "amount", "label": "Amount", "type": "currency" },
-    { "key": "status", "label": "Status", "type": "badge" }
+    { "key": "date", "label": "日期", "type": "date" },
+    { "key": "amount", "label": "金额", "type": "currency" },
+    { "key": "status", "label": "状态", "type": "badge" }
   ],
   "rows": [
     { "date": "2025-01-15", "amount": 250.00, "status": "Completed" }
@@ -131,7 +125,7 @@ The output file should contain valid JSON in one of these formats:
 }
 ```
 
-**Rows-only format:**
+**仅行格式：**
 ```json
 {
   "rows": [
@@ -140,262 +134,78 @@ The output file should contain valid JSON in one of these formats:
 }
 ```
 
-Or just a bare array:
+或仅裸数组：
 ```json
 [
   { "date": "2025-01-15", "amount": 250.00, "status": "Completed" }
 ]
 ```
 
-**Merge semantics:** When using `"src"`, inline `columns` and `title` in the markdown block take precedence over values in the file. This lets you define column types in the block while pulling rows from the file.
+**合并语义：** 使用 `"src"` 时，markdown 块中的内联 `columns` 和 `title` 优先于文件中的值。这允许你在块中定义列类型，同时从文件中提取行。
 
-### Referencing the Output
+### 引用输出
 
-After `transform_data` succeeds, it returns the **absolute path** to the output file. Use that exact path as the `"src"` value in your datatable or spreadsheet block:
+`transform_data` 成功后，返回输出文件的 **绝对路径**。在 datatable 或 spreadsheet 块中使用该确切路径作为 `"src"` 值：
 
 ````
 ```datatable
 {
-  "src": "/absolute/path/returned/by/transform_data",
-  "title": "Recent Transactions",
+  "src": "/transform_data/返回的/绝对/路径",
+  "title": "最近交易",
   "columns": [
-    { "key": "date", "label": "Date", "type": "date" },
-    { "key": "amount", "label": "Amount", "type": "currency" },
-    { "key": "status", "label": "Status", "type": "badge" }
+    { "key": "date", "label": "日期", "type": "date" },
+    { "key": "amount", "label": "金额", "type": "currency" },
+    { "key": "status", "label": "状态", "type": "badge" }
   ]
 }
 ```
 ````
 
-**Important:** Always use the absolute path from the `transform_data` tool result. Do not construct relative paths manually.
+**重要：** 始终使用 `transform_data` 工具结果中的绝对路径。不要手动构造相对路径。
 
-### Complete Workflow Example
+## 安全与约束
 
-User asks: "Show me all Stripe transactions from last month"
+- **隔离子进程：** 脚本在子进程中运行，无法访问 API 密钥、凭据或敏感环境变量
+- **30 秒超时：** 超过 30 秒的脚本会被终止
+- **路径沙箱：** 输入文件必须在会话目录内。输出文件必须在会话 `data/` 目录内。路径遍历尝试（如 `../`）被阻止。
+- **无网络访问：** 脚本继承进程环境（除机密外），但不应进行网络调用 — 使用 MCP 工具获取数据，然后在本地转换
+- **被阻止的环境变量：** `ANTHROPIC_API_KEY`、`CLAUDE_CODE_OAUTH_TOKEN`、`AWS_*`、`GITHUB_TOKEN`、`OPENAI_API_KEY`、`GOOGLE_API_KEY`、`STRIPE_SECRET_KEY`、`NPM_TOKEN`
 
-**Step 1:** Call the Stripe API via MCP tool — get large JSON response
+## 最佳实践
 
-**Step 2:** Call `transform_data` to extract and structure the data:
-```
-transform_data({
-  language: "python3",
-  script: "import json, sys\nwith open(sys.argv[1]) as f:\n    data = json.load(f)\nrows = [{\n    'id': t['id'],\n    'date': t['created'],\n    'amount': t['amount'] / 100,\n    'status': t['status'].title(),\n    'customer': t.get('customer_email', 'N/A')\n} for t in data.get('data', data.get('transactions', []))]\nwith open(sys.argv[-1], 'w') as f:\n    json.dump({'rows': rows}, f)",
-  inputFiles: ["long_responses/stripe_result.txt"],
-  outputFile: "transactions.json"
-})
-```
-
-**Step 3:** Output the datatable block using the absolute path from `transform_data` result:
-````
-```datatable
-{
-  "src": "/absolute/path/from/transform_data/result",
-  "title": "Stripe Transactions — Last Month",
-  "columns": [
-    { "key": "id", "label": "ID", "type": "text" },
-    { "key": "date", "label": "Date", "type": "date" },
-    { "key": "amount", "label": "Amount", "type": "currency" },
-    { "key": "status", "label": "Status", "type": "badge" },
-    { "key": "customer", "label": "Customer", "type": "text" }
-  ]
-}
-```
-````
-
-## Common Patterns & Recipes
-
-### JSON API Response → Datatable
-
-Most common pattern. Extract fields from a JSON API response:
-
-**Python:**
-```python
-import json, sys
-
-with open(sys.argv[1]) as f:
-    data = json.load(f)
-
-# Handle common API response shapes
-items = data.get('data', data.get('items', data.get('results', data)))
-if not isinstance(items, list):
-    items = [items]
-
-rows = [{
-    'id': item['id'],
-    'name': item.get('name', ''),
-    'created': item.get('created_at', ''),
-} for item in items]
-
-with open(sys.argv[-1], 'w') as f:
-    json.dump({'rows': rows}, f)
-```
-
-### CSV/TSV → Spreadsheet
-
-Parse CSV data into a spreadsheet for export:
-
-**Python:**
-```python
-import csv, json, sys
-
-with open(sys.argv[1]) as f:
-    reader = csv.DictReader(f)
-    rows = list(reader)
-
-# Auto-detect columns from CSV headers
-columns = [{'key': k, 'label': k.replace('_', ' ').title(), 'type': 'text'} for k in rows[0].keys()] if rows else []
-
-with open(sys.argv[-1], 'w') as f:
-    json.dump({'columns': columns, 'rows': rows}, f)
-```
-
-### Multi-Source Join
-
-Combine data from multiple tool results:
-
-**Python:**
-```python
-import json, sys
-
-# sys.argv[1:-1] are input files, sys.argv[-1] is output
-with open(sys.argv[1]) as f:
-    users = {u['id']: u for u in json.load(f)['data']}
-with open(sys.argv[2]) as f:
-    orders = json.load(f)['data']
-
-rows = [{
-    'order_id': o['id'],
-    'customer': users.get(o['user_id'], {}).get('name', 'Unknown'),
-    'amount': o['total'],
-    'status': o['status'],
-} for o in orders]
-
-with open(sys.argv[-1], 'w') as f:
-    json.dump({'rows': rows}, f)
-```
-
-Call with:
-```
-transform_data({
-  language: "python3",
-  script: "...",
-  inputFiles: ["long_responses/users.txt", "long_responses/orders.txt"],
-  outputFile: "orders-with-customers.json"
-})
-```
-
-### Filtering & Aggregation
-
-Summarize data before display:
-
-**Python:**
-```python
-import json, sys
-from collections import defaultdict
-
-with open(sys.argv[1]) as f:
-    data = json.load(f)
-
-# Group by category and sum
-totals = defaultdict(lambda: {'count': 0, 'total': 0})
-for item in data['transactions']:
-    cat = item.get('category', 'Other')
-    totals[cat]['count'] += 1
-    totals[cat]['total'] += item['amount']
-
-rows = [{'category': k, 'count': v['count'], 'total': v['total']}
-        for k, v in sorted(totals.items(), key=lambda x: -x[1]['total'])]
-
-with open(sys.argv[-1], 'w') as f:
-    json.dump({'rows': rows}, f)
-```
-
-### Node.js Alternative
-
-When Python isn't available or you prefer JavaScript:
-
-**Node:**
-```javascript
-const fs = require('fs');
-const data = JSON.parse(fs.readFileSync(process.argv[2], 'utf-8'));
-
-const rows = data.items.map(item => ({
-  id: item.id,
-  title: item.title,
-  status: item.state,
-  created: item.created_at,
-}));
-
-fs.writeFileSync(process.argv.at(-1), JSON.stringify({ rows }));
-```
-
-## Security & Constraints
-
-- **Isolated subprocess:** Scripts run in a child process with no access to API keys, credentials, or sensitive environment variables
-- **30-second timeout:** Scripts that exceed 30 seconds are killed
-- **Path sandboxing:** Input files must be within the session directory. Output files must be within the session `data/` directory. Path traversal attempts (e.g., `../`) are blocked.
-- **No network access:** Scripts inherit the process environment (minus secrets) but should not make network calls — use MCP tools for data fetching, then transform locally
-- **Blocked env vars:** `ANTHROPIC_API_KEY`, `CLAUDE_CODE_OAUTH_TOKEN`, `AWS_*`, `GITHUB_TOKEN`, `OPENAI_API_KEY`, `GOOGLE_API_KEY`, `STRIPE_SECRET_KEY`, `NPM_TOKEN`
-
-## Best Practices
-
-### Decision Tree
+### 决策树
 
 ```
-Is the data < 20 rows?
-  → YES: Inline it directly in the datatable/spreadsheet block
-  → NO: Use transform_data + "src" field
+数据少于 20 行吗？
+  → 是：直接在 datatable/spreadsheet 块中内联
+  → 否：使用 transform_data + "src" 字段
 
-Is the data already structured JSON?
-  → YES: Write a simple extraction script
-  → NO: Use Python's csv, json, or string parsing to structure it
+数据已经是结构化 JSON 吗？
+  → 是：编写简单的提取脚本
+  → 否：使用 Python 的 csv、json 或字符串解析来结构化
 
-Does the user need to export/download?
-  → YES: Use spreadsheet block (supports .xlsx export)
-  → NO: Use datatable block (better sort/filter/group UX)
+用户需要导出/下载吗？
+  → 是：使用 spreadsheet 块（支持 .xlsx 导出）
+  → 否：使用 datatable 块（更好的排序/筛选/分组体验）
 ```
 
-### Naming Conventions
+### 命名约定
 
-- Output files: descriptive, kebab-case — `stripe-transactions.json`, `monthly-revenue.json`
-- Match the context — if user asked about "Q4 sales", name it `q4-sales.json`
+- 输出文件：描述性、短横线命名 — `stripe-transactions.json`、`monthly-revenue.json`
+- 匹配上下文 — 如果用户问"Q4 销售额"，命名为 `q4-sales.json`
 
-### Error Handling in Scripts
+## 故障排除
 
-- Always validate input data exists before processing
-- Use `try/except` (Python) or `try/catch` (Node) for JSON parsing
-- Write partial results if possible — some data is better than an error
-- Keep scripts concise — complex logic is harder to debug in the 30s timeout
+### "脚本失败（退出代码 1）"
+- 检查错误输出中的语法错误或缺少的导入
+- 验证输入文件存在于指定路径
+- 确保脚本正确从 `sys.argv` / `process.argv` 读取
 
-### Script Tips
+### "输出文件未创建"
+- 确保脚本写入 `sys.argv[-1]` / `process.argv.at(-1)`（最后一个参数）
+- 检查 `json.dump` / `fs.writeFileSync` 是否成功完成
+- 验证输出是有效的 JSON
 
-- Prefer Python for data transformation — it's the most reliable runtime for JSON/CSV processing
-- Keep scripts self-contained — no `pip install` or external dependencies
-- Use `json.dump` with default serialization — don't try to format numbers in the script; let column types handle rendering
-- For dates, output ISO format strings (`YYYY-MM-DD`) — the `date` column type handles formatting
-
-## Troubleshooting
-
-### "Script failed (exit code 1)"
-- Check the error output for syntax errors or missing imports
-- Verify input files exist at the specified paths
-- Make sure the script reads from `sys.argv` / `process.argv` correctly
-
-### "Output file was not created"
-- Ensure the script writes to `sys.argv[-1]` / `process.argv.at(-1)` (the last argument)
-- Check that `json.dump` / `fs.writeFileSync` completed successfully
-- Verify the output is valid JSON
-
-### "Input file not found"
-- Input paths are relative to the session directory
-- Check the exact path from the tool result that produced the file
-- Use `long_responses/` prefix for saved tool results, `attachments/` for user-uploaded files
-
-### Empty or missing rows in table
-- Verify the JSON structure: must have `"rows"` key with an array, or be a bare array
-- Check that row keys match the column `"key"` fields exactly (case-sensitive)
-- Ensure values match expected types (numbers for `currency`/`percent`, not strings)
-
-### Table shows "Loading..." indefinitely
-- The `"src"` path must be the **absolute path** returned by `transform_data` — do not use relative paths
-- Verify the file was actually created by `transform_data` (check the tool result message)
+### 表格显示"加载中..."无限期
+- `"src"` 路径必须是 `transform_data` 返回的 **绝对路径** — 不要使用相对路径
+- 验证文件确实由 `transform_data` 创建（检查工具结果消息）

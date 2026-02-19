@@ -71,7 +71,7 @@ export class HookEventLogger {
     const entry: LoggedHookEvent = {
       id: randomUUID(),
       time: new Date().toISOString(),
-      source: 'craft-agent/hooks',
+      source: 'iweather/hooks',
       ...event,
     };
     this.buffer.push(JSON.stringify(entry));

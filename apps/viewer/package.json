@@ -1,5 +1,5 @@
 {
-  "name": "@craft-agent/viewer",
+  "name": "@iweather/viewer",
   "version": "0.4.8",
   "description": "Web viewer for Craft Agents sessions - upload and share session transcripts",
   "private": true,
@@ -11,8 +11,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@craft-agent/core": "workspace:*",
-    "@craft-agent/ui": "workspace:*",
+    "@iweather/core": "workspace:*",
+    "@iweather/ui": "workspace:*",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
