@@ -217,15 +217,20 @@ export function useOnboarding({
         setState(s => ({
           ...s,
           completionStatus: 'saving',
+          credentialStatus: 'error',
           errorMessage: result.error || 'Failed to save configuration',
         }))
+        // Throw error so caller knows the save failed
+        throw new Error(result.error || 'Failed to save configuration')
       }
     } catch (error) {
       console.error('[Onboarding] handleSaveConfig error:', error)
       setState(s => ({
         ...s,
+        credentialStatus: 'error',
         errorMessage: error instanceof Error ? error.message : 'Failed to save configuration',
       }))
+      throw error
     }
   }, [state.apiSetupMethod, onConfigSaved, editingSlug, existingSlugs])
 
